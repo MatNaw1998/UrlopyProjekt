@@ -10,7 +10,7 @@ imieNazwisko varchar(100),
 od varchar(100),
 doU varchar(100),
 iloscDni int,
-status varchar(100)
+statusU varchar(100)
 );
 
 create table daneLog(
@@ -30,10 +30,13 @@ imieNazwisko varchar(100)
 grant ALL PRIVILEGES on projektUrlop.* to 'kierownik'@'localhost';
 grant INSERT , SELECT , UPDATE on projektUrlop.* to 'pracownik'@'localhost';
 
+drop trigger poDodaniu;
 
-INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,status) 
-                    VALUES("Mateusz","2020-09-21","2020-09-28",8,"nie zatwierdzone")
+INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) 
+                    VALUES("Mateusz","2020-09-21","2020-09-28",8,"nie zatwierdzone");
 
+INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) 
+                    VALUES("ada","2020-09-21","2020-09-28",8,"");
 
 
 
