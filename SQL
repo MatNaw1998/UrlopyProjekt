@@ -39,6 +39,4 @@ INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU)
                     VALUES("ada","2020-09-21","2020-09-28",8,"");
 
 
-
-
-
+SET SQL_SAFE_UPDATES = 0;
