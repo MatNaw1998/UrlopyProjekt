@@ -52,28 +52,15 @@
             <div class="form-group">
                 <label> od </label>
                 <label>
-                    <input type="text"   class="form-control" name="od"/>
+                    <input type="date"   class="form-control" name="od"/>
                 </label>
             </div>
             <div class="form-group">
                 <label>do</label>
                 <label>
-                    <input type="text" step="0.01" class="form-control" name="do"/>
+                    <input type="date"  class="form-control" name="doU"/>
                 </label>
             </div>
-            <div class="form-group">
-                <label>ilosc</label>
-                <label>
-                    <input type="text" step="0.01" class="form-control" name="iloscDni"/>
-                </label>
-            </div>
-            <div class="form-group">
-                <label> status</label>
-                <label>
-                    <input type="text"  class="form-control" name="status"/>
-                </label>
-            </div>
-
             <button type="submit" class="btn btn-info">Dodaj</button>
         </form>
     </div>

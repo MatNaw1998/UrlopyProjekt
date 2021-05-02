@@ -1,8 +1,6 @@
 package edu.ib.JSP20201JDBC;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -10,18 +8,34 @@ public class Urlopy {
 
 
     private String imieNazwisko ;
-    private LocalDate od;
-    private LocalDate doU;
-    private Long   iloscDni ;
-    private String  status;
+    private String od;
+    private String doU;
+    private Long  iloscDni ;
+    private String statusU;
 
 
-    public Urlopy(String imieNazwisko, LocalDate od, LocalDate doU, Long iloscDni, String status) {
+    public Urlopy(String imieNazwisko, String od, String doU, Long iloscDni, String statusU) {
         this.imieNazwisko = imieNazwisko;
         this.od = od;
         this.doU = doU;
         this.iloscDni = iloscDni;
-        this.status = status;
+        this.statusU = statusU;
+    }
+
+    public String getOd() {
+        return od;
+    }
+
+    public void setOd(String od) {
+        this.od = od;
+    }
+
+    public String getDoU() {
+        return doU;
+    }
+
+    public void setDoU(String doU) {
+        this.doU = doU;
     }
 
     public String getImieNazwisko() {
@@ -32,21 +46,6 @@ public class Urlopy {
         this.imieNazwisko = imieNazwisko;
     }
 
-    public LocalDate getOd() {
-        return od;
-    }
-
-    public void setOd(LocalDate od) {
-        this.od = od;
-    }
-
-    public LocalDate getDoU() {
-        return doU;
-    }
-
-    public void setDoU(LocalDate doU) {
-        this.doU = doU;
-    }
 
     public Long getIloscDni() {
         return iloscDni;
@@ -56,12 +55,12 @@ public class Urlopy {
         this.iloscDni = iloscDni;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatusU() {
+        return statusU;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusU(String statusU) {
+        this.statusU = statusU;
     }
 
     public long iloscDniOblicz(LocalDate od, LocalDate doU){

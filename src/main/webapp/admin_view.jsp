@@ -36,7 +36,7 @@
 <div class="row form-group"></div>
 
 
-<h1>Resorty</h1>
+<h1>Urlopy</h1>
 
 <div class="row form-group"></div>
 <div class="row form-group"></div>
@@ -51,7 +51,7 @@
         <th scope="col">od</th>
         <th scope="col">do</th>
         <th scope="col">ilosc</th>
-        <th scope="col">status</th>
+        <th scope="col">statusU</th>
     </thead>
     <tbody>
 
@@ -71,7 +71,7 @@
             <td>${uropList.od}</td>
             <td>${uropList.doU}</td>
             <td>${uropList.iloscDni}</td>
-            <td>${uropList.status}</td>
+            <td>${uropList.statusU}</td>
 <%--            <td>--%>
 <%--            <a href="${deleteLink}"--%>
 <%--               onclick="if(!(confirm('Czy na pewno chcesz usunąć ten telefon?'))) return false">--%>

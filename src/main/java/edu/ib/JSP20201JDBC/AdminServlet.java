@@ -13,6 +13,8 @@ import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
@@ -111,13 +113,15 @@ public class AdminServlet extends HttpServlet {
 
         // odczytanie danych z formularza
         String imieNazwisko = request.getParameter("imieNazwisko");
-        LocalDate od = LocalDate.parse(request.getParameter("od"));
-        LocalDate doU = LocalDate.parse(request.getParameter("doU"));
-        Long ilosc = Long.parseLong(request.getParameter("doU"));
-        String status = request.getParameter("status");
+        String od = request.getParameter("od");
+        String doU = request.getParameter("doU");
+        LocalDate odD = LocalDate.parse(od);
+        LocalDate doD = LocalDate.parse(doU);
+        Long ilosc = DAYS.between(odD, doD);
+
 
         // utworzenie obiektu klasy Phone
-        Urlopy urlopy = new Urlopy(imieNazwisko,od,doU,ilosc,status);
+        Urlopy urlopy = new Urlopy(imieNazwisko,od,doU,ilosc,"do akceptacji");
 
         // dodanie nowego obiektu do BD
         dbUtil.addUrlop(urlopy);

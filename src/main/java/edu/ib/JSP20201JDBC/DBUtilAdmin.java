@@ -41,14 +41,14 @@ public class DBUtilAdmin extends DBUtil {
                 // pobranie danych z rzedu
                 int id = resultSet.getInt("id");
                 String imieNazwisko = resultSet.getString("imieNazwisko");
-                LocalDate od = LocalDate.parse(resultSet.getString("od"));
-                LocalDate doU = LocalDate.parse(resultSet.getString("doU"));
+                String od = resultSet.getString("od");
+                String doU = resultSet.getString("doU");
                 Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
-                String status = resultSet.getString("status");
+                String statusU = resultSet.getString("statusU");
 
 
                 // dodanie do listy nowego obiektu
-                urlopies.add(new Urlopy(imieNazwisko,od,doU,iloscDni,status));
+                urlopies.add(new Urlopy(imieNazwisko,od,doU,iloscDni,statusU));
 
             }
 
@@ -72,15 +72,14 @@ public class DBUtilAdmin extends DBUtil {
             conn = DriverManager.getConnection(URL, name, password);
 
             // zapytanie INSERT i ustawienie jego parametrow
-            String sql = "INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,status) " +
-                    "VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) " +
+                    "VALUES(?,?,?,?,'Do akceptacji')";
 
             statement = conn.prepareStatement(sql);
             statement.setString(1, String.valueOf(urlopy.getImieNazwisko()));
             statement.setString(2, String.valueOf(urlopy.getOd()));
             statement.setString(3, String.valueOf(urlopy.getDoU()));
             statement.setLong(4, urlopy.getIloscDni());
-            statement.setString(5, urlopy.getStatus());
 
 
             // wykonanie zapytania
