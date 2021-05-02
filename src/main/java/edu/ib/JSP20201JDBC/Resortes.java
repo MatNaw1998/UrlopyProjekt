@@ -1,7 +1,7 @@
 package edu.ib.JSP20201JDBC;
 
 public class Resortes {
-
+/*
     private String resort_name;
     private String state;
     private double summit;
@@ -125,4 +125,6 @@ public class Resortes {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+ */
 }
