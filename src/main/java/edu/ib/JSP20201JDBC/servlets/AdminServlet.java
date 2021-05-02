@@ -1,4 +1,7 @@
-package edu.ib.JSP20201JDBC;
+package edu.ib.JSP20201JDBC.servlets;
+
+import edu.ib.JSP20201JDBC.Urlopy;
+import edu.ib.JSP20201JDBC.db.DBUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -18,7 +21,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
-    private DBUtilAdmin dbUtil;
+    private DBUtil dbUtil;
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UCT";
 
 
@@ -28,7 +31,7 @@ public class AdminServlet extends HttpServlet {
 
         try {
 
-            dbUtil = new DBUtilAdmin(db_url);
+            dbUtil = new DBUtil(db_url);
 
         } catch (Exception e) {
             throw new ServletException(e);
