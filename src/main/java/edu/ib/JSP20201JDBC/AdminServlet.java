@@ -94,10 +94,12 @@ public class AdminServlet extends HttpServlet {
                     addResort(request, response);
                     break;
 
-                case "DELETE":
-                    deleteUrop(request, response);
+                case "ZATWIERDZ":
+                    updateZatwierdz(request, response);
                     break;
-
+                case "ODRZUC":
+                    updateUdrzuc(request, response);
+                    break;
                 default:
                     listUrolps(request, response);
             }
@@ -145,13 +147,27 @@ public class AdminServlet extends HttpServlet {
         dispatcher.forward(request, response);
 
     }
-    private void deleteUrop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    private void updateZatwierdz(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
-        String id = request.getParameter("id");
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        // usuniecie telefonu z BD
-        dbUtil.deleteUrlop(id);
+        // uaktualnienie danych w BD
+        dbUtil.updateZatwierdz(id);
+
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
+
+    }
+
+    private void updateUdrzuc(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        // uaktualnienie danych w BD
+        dbUtil.updateOdrzuc(id);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);

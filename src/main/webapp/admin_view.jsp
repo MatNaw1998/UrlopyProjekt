@@ -59,19 +59,28 @@
 
         <%-- definiowanie linkow--%>
 
-<%--        <c:url var="deleteLink" value="AdminServlet">--%>
-<%--            <c:param name="command" value="DELETE"></c:param>--%>
-<%--            <c:param name="resort_name" value="${uropList.getId}"></c:param>--%>
-<%--        </c:url>--%>
-
+        <c:url var="zatwierdz" value="AdminServlet">
+            <c:param name="command" value="ZATWIERDZ"></c:param>
+            <c:param name="id" value="${uropList.id}"></c:param>
+        </c:url>
+        <c:url var="odrzuc" value="AdminServlet">
+            <c:param name="command" value="ODRZUC"></c:param>
+            <c:param name="id" value="${uropList.id}"></c:param>
+        </c:url>
 
         <tr>
-            <th scope="row"></th>
+            <th scope="row">${uropList.id}</th>
             <td>${uropList.imieNazwisko}</td>
             <td>${uropList.od}</td>
             <td>${uropList.doU}</td>
             <td>${uropList.iloscDni}</td>
             <td>${uropList.statusU}</td>
+            <td><a href="${zatwierdz}">
+                <button type="button" class="btn btn-success">Zatwierdz</button>
+            </a>
+            <td><a href="${odrzuc}">
+                <button type="button" class="btn btn-success">Odrzuc</button>
+            </a>
 <%--            <td>--%>
 <%--            <a href="${deleteLink}"--%>
 <%--               onclick="if(!(confirm('Czy na pewno chcesz usunąć ten telefon?'))) return false">--%>
