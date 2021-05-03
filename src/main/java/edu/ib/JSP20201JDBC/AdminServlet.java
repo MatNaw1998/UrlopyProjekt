@@ -19,7 +19,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class AdminServlet extends HttpServlet {
 
     private DBUtilAdmin dbUtil;
-    private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UCT";
+    private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
     @Override
@@ -100,6 +100,9 @@ public class AdminServlet extends HttpServlet {
                 case "ODRZUC":
                     updateUdrzuc(request, response);
                     break;
+                case "USUN":
+                    deleteUrlop(request, response);
+                    break;
                 default:
                     listUrolps(request, response);
             }
@@ -145,6 +148,19 @@ public class AdminServlet extends HttpServlet {
 
         // przekazanie do JSP
         dispatcher.forward(request, response);
+
+    }
+
+    private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        // usuniecie telefonu z BD
+        dbUtil.deleteUrlop(id);
+
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
 
     }
 

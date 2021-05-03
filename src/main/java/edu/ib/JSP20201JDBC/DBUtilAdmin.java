@@ -122,7 +122,6 @@ public class DBUtilAdmin extends DBUtil {
     }
 
     public void updateOdrzuc( int id ) throws Exception {
-
         Connection conn = null;
         PreparedStatement statement = null;
 
@@ -143,6 +142,34 @@ public class DBUtilAdmin extends DBUtil {
         } finally {
             // zamkniecie obiektow JDBC
             close(conn, statement, null);
+        }
+    }
+
+
+    public void deleteUrlop(int id) throws Exception {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = DriverManager.getConnection(URL, name, password);
+
+            // zapytanie DELETE
+            String sql = "DELETE FROM daneUrlopu WHERE id =?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+
         }
 
     }
