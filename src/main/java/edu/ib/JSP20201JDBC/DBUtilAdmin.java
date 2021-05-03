@@ -15,7 +15,7 @@ public class DBUtilAdmin extends DBUtil {
         this.URL = URL;
     }
 
-    @Override
+    //@Override
     public List<Urlopy> getUrlopy() throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
 
@@ -174,7 +174,33 @@ public class DBUtilAdmin extends DBUtil {
 
     }
 
+    public boolean validate(String name, String pass) {
+        boolean status = false;
 
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+
+        }
+
+        Connection conn = null;
+
+        try {
+
+            conn = DriverManager.getConnection(URL, name, pass);
+
+
+            status = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
 
 
     public void setName(String name) {

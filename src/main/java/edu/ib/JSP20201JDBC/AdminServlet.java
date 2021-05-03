@@ -46,7 +46,7 @@ public class AdminServlet extends HttpServlet {
         dbUtil.setName(name);
         dbUtil.setPassword(password);
 
-        if (validate(name, password)) {
+        if (dbUtil.validate(name, password)) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
 
             List<Urlopy> urlopyList = null;
@@ -190,31 +190,5 @@ public class AdminServlet extends HttpServlet {
 
     }
 
-
-    private boolean validate(String name, String pass) {
-        boolean status = false;
-
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-
-        Connection conn = null;
-
-        try {
-
-            conn = DriverManager.getConnection(db_url, name, pass);
-            status = true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return status;
-    }
 
 }

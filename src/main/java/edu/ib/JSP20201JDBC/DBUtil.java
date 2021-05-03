@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class DBUtil {
 
 
-     abstract List<Urlopy> getUrlopy() throws Exception;
+//     abstract List<Urlopy> getUrlopy() throws Exception;
 
     protected static void close(Connection conn, Statement statement, ResultSet resultSet) {
 

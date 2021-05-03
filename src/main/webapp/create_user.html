@@ -21,18 +21,18 @@
 
     <div class="col-md-8 order-md-1 text-center">
         <h4 class="mb-3">Billing address</h4>
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" action="CreateUserServlet" method="post">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="employeeID">ID Pracownika</label>
-                    <input type="text" class="form-control" id="employeeID" placeholder="" value="" required>
+                    <input type="text" name="employeeID" id="employeeID" placeholder="" value="" required>
                     <div class="invalid-feedback">
                         musisz podać dwoje ID.
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="password">Haslo</label>
-                    <input type="text" class="form-control" id="password" placeholder="" value="" required>
+                    <input type="text" name="password" id="password" placeholder="" value="" required>
                     <div class="invalid-feedback">
                         Valid last name is required.
                     </div>
@@ -42,7 +42,7 @@
 
             <div class="mb-3">
                 <label for="email">Email <span class="text-muted">(wprowadź adres służbowy)</span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <input type="email" name="email" id="email" placeholder="you@example.com" required>
                 <div class="invalid-feedback">
                     Musisz podac email
                 </div>

@@ -41,7 +41,7 @@
     <div class="container">
         <h1>Wpisz dane nowego żądania</h1>
 
-        <form action="AdminServlet" method="get">
+        <form action="AdminUrlopyServlet" method="get">
             <input type="hidden" name="command" value="ADD">
             <div class="form-group">
                 <label>name</label>
@@ -81,7 +81,7 @@
     <div class="container-fluid">
 
         <div class="col-sm-9">
-            <a href="AdminServlet" class="btn btn-lg btn-primary" role="button" aria-disabled="true">Wróć do zestawienia</a>
+            <a href="AdminUrlopyServlet" class="btn btn-lg btn-primary" role="button" aria-disabled="true">Wróć do zestawienia</a>
         </div>
     </div>
 </div>
