@@ -69,7 +69,7 @@
         </c:url>
 
         <tr>
-            <th scope="row">${uropList.id}</th>
+            <th scope="row"></th>
             <td>${uropList.imieNazwisko}</td>
             <td>${uropList.od}</td>
             <td>${uropList.doU}</td>
