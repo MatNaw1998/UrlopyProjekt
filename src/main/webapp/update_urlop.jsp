@@ -1,17 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: macmini2
-  Date: 08/04/2020
-  Time: 14:48
+  Date: 09/04/2020
+  Time: 11:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+         import="java.util.*" %>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Admin log panel</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title>Zmiana danych urlopu</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -19,6 +18,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -26,7 +26,7 @@
         <div class="navbar-header">
 
             <div class="style padding: 25 px">
-                <a class="navbar-brand" href="index.html">Strona Główna</a>
+                <a class="navbar-brand" href="index.html">Strona główna</a>
             </div>
 
         </div>
@@ -39,12 +39,14 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1>Wpisz dane nowego żądania</h1>
+        <h1>Zmień dane urlopu</h1>
 
         <form action="LoginServlet" method="get">
-            <input type="hidden" name="command" value="ADD">
+            <input type="hidden" name="command" value="MOD"/>
+            <input type="hidden" name="id" value="${URLOP.id}"/>
+            <input type="hidden" name="email" value="${URLOP.imieNazwisko}"/>
             <div class="form-group">
-                <label> od </label>
+                <label >Od</label>
                 <label>
                     <input type="date"   class="form-control" name="od"/>
                     <script>
@@ -54,7 +56,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <label>do</label>
+                <label >Do</label>
                 <label>
                     <input type="date"  class="form-control" name="doU"/>
                     <script>
@@ -63,7 +65,7 @@
                     </script>
                 </label>
             </div>
-            <button name = "dodajurlop" type="submit" class="btn btn-info">Dodaj</button>
+            <button type="submit" class="btn btn-success">Zmień dane</button>
         </form>
     </div>
 </div>
@@ -81,3 +83,4 @@
 </div>
 
 </body>
+</html>

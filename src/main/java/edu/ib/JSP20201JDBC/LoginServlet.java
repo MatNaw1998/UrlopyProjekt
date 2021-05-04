@@ -92,6 +92,12 @@ public class LoginServlet extends HttpServlet {
                     case "USUN":
                         updateUsun(request, response);
                         break;
+                    case "LOAD":
+                        getUrlopById(request, response);
+                        break;
+                    case "MOD":
+                        updateUrlop(request, response);
+                        break;
                     default:
                         listUrolps(request, response);
                 }
@@ -142,6 +148,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("EMAIL", em);
                 requestDispatcher.forward(request, response);
                 emial = login;
+
 
             } else {
                 PrintWriter out = response.getWriter();
@@ -197,6 +204,41 @@ public class LoginServlet extends HttpServlet {
         listUrolps(request, response);
 
     }
+    private void updateUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        String od = request.getParameter("od");
+        String doU = request.getParameter("doU");
+        LocalDate odD = LocalDate.parse(od);
+        LocalDate doD = LocalDate.parse(doU);
+        Long ilosc = DAYS.between(odD, doD);
+
+
+        // utworzenie nowego telefonu
+        Urlopy urlopy = new Urlopy(id,emial,od,doU,ilosc,"do akceptacji");
+
+        // uaktualnienie danych w BD
+        dbUtil.updateUrlop(urlopy);
+
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
+
+    }
+
+    private void getUrlopById(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String id = request.getParameter("id");
+
+        Urlopy urlopy = dbUtil.getUrlopById(Integer.parseInt(id));
+
+        request.setAttribute("URLOP",urlopy);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/update_urlop.jsp");
+        dispatcher.forward(request,response);
+    }
+
 
 
 }

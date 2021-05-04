@@ -187,6 +187,94 @@ public class DBUtilUser extends DBUtil {
 
     }
 
+    public void updateUrlop(Urlopy urlopy) throws Exception {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie UPDATE
+            String sql = "UPDATE daneUrlopu SET id=?, email=?, od=?," +
+                    "doU=?, iloscDni=?, statusU=? " +
+                    "WHERE id =?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, urlopy.getId());
+            statement.setString(2, urlopy.getImieNazwisko());
+            statement.setString(3, urlopy.getOd());
+            statement.setString(4, urlopy.getDoU());
+            statement.setLong(5, urlopy.getIloscDni());
+            statement.setString(6, urlopy.getStatusU());
+            statement.setInt(7, urlopy.getId());
+
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+
+        }
+
+    }
+
+    public Urlopy getUrlopById(int id){
+        Urlopy urlop = null;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie SELECT
+            String sql = "SELECT * FROM daneurlopu WHERE id =?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            System.out.println(statement.toString());
+            // wykonanie zapytania
+            resultSet = statement.executeQuery();
+            System.out.println(resultSet.toString());
+            // przetworzenie wyniku zapytania
+
+            if (resultSet.next()) {
+
+                String email = resultSet.getString("email");
+                String od = resultSet.getString("od");
+                String doU = resultSet.getString("doU");
+                Long iloscDni = resultSet.getLong("iloscDni");
+                String statusU = resultSet.getString("statusU");
+
+
+                // utworzenie obiektu
+                urlop = new Urlopy(id, email, od, doU, iloscDni, statusU);
+
+            } else {
+                throw new Exception("Could not find phone with id " + id);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, resultSet);
+
+        }
+        return urlop;
+
+    }
+
 
 
 
