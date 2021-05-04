@@ -13,10 +13,10 @@ iloscDni int,
 statusU varchar(100)
 );
 
-create table daneLog(
-login varchar(100)  primary key ,
+create table dane_logowania(
+id varchar(100)  primary key ,
 haslo varchar(100),
-imieNazwisko varchar(100)
+email varchar(100)
 );
 
 
