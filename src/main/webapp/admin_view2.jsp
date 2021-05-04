@@ -1,3 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+         import="java.util.*" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,14 +16,12 @@
 <body>
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
+    <h5 class="my-0 mr-md-auto font-weight-normal">Super Pracka</h5>
     <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Features</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a>
-        <a class="p-2 text-dark" href="#">Support</a>
-        <a class="p-2 text-dark" href="#">Pricing</a>
+        <a class="p-2 text-dark" href="employees.html">Pracownicy</a>
+        <a class="p-2 text-dark" href="admin_view.jsp">Urlopy</a>
     </nav>
-    <a class="btn btn-outline-primary" href="#">Sign up</a>
+    <a class="btn btn-outline-primary" href="index.html">Wyloguj</a>
 </div>
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -31,7 +32,6 @@
 
 <div class="container">
     <div class="card-deck mb-3 text-center">
-
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Panel urlopów</a>
@@ -58,6 +58,63 @@
 
 
     </div>
+
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">name</th>
+            <th scope="col">od</th>
+            <th scope="col">do</th>
+            <th scope="col">ilosc</th>
+            <th scope="col">statusU</th>
+        </thead>
+        <tbody>
+
+        <c:forEach var="uropList" items="${URLOPY_LIST}">
+
+            <%-- definiowanie linkow--%>
+
+            <c:url var="zatwierdz" value="AdminServlet">
+                <c:param name="command" value="ZATWIERDZ"></c:param>
+                <c:param name="id" value="${uropList.id}"></c:param>
+            </c:url>
+            <c:url var="odrzuc" value="AdminServlet">
+                <c:param name="command" value="ODRZUC"></c:param>
+                <c:param name="id" value="${uropList.id}"></c:param>
+            </c:url>
+            <c:url var="usun" value="AdminServlet">
+                <c:param name="command" value="USUN"></c:param>
+                <c:param name="id" value="${uropList.id}"></c:param>
+            </c:url>
+
+            <tr>
+                <th scope="row"></th>
+                <td>${uropList.imieNazwisko}</td>
+                <td>${uropList.od}</td>
+                <td>${uropList.doU}</td>
+                <td>${uropList.iloscDni}</td>
+                <td>${uropList.statusU}</td>
+                <td><a href="${zatwierdz}">
+                    <button type="button" class="btn btn-success">Zatwierdz</button>
+                </a>
+                </td>
+                <td>
+                    <a href="${odrzuc}">
+                        <button type="button" class="btn btn-success">Odrzuc</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="${usun}">
+                        <button type="button" class="btn btn-success">Usuń</button>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
 </div>
 
 
