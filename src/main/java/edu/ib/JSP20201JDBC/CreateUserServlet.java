@@ -1,5 +1,8 @@
 package edu.ib.JSP20201JDBC;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -7,33 +10,58 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.time.LocalDate;
-import java.util.List;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @WebServlet("/CreateUserServlet")
 public class CreateUserServlet extends HttpServlet {
 
-    private DBUtilAddUser dbUtil;
+    private DBUtilUser dbUtil;
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private DataSource dataSource;
 
-//TODO zadanko- polaczyc mi create user html z servletem, nie potrafie znalezc bledu
+    public CreateUserServlet() {
+
+// Obtain our environment naming context
+        Context initCtx = null;
+        try {
+            initCtx = new InitialContext();
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            // Look up our data source
+            dataSource = (DataSource)
+                    envCtx.lookup("jdbc/urlop_web_app");
+
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    //TODO zadanko- polaczyc mi create user html z servletem, nie potrafie znalezc bledu
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
         try {
 
-            dbUtil = new DBUtilAddUser(db_url);
+            dbUtil = new DBUtilUser(dataSource);
 
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            addResort(request,response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/create_user.html");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void addResort(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

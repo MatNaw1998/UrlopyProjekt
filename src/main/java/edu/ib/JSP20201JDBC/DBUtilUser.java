@@ -1,19 +1,22 @@
 package edu.ib.JSP20201JDBC;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-public class DBUtilAddUser extends DBUtil {
+public class DBUtilUser extends DBUtil {
 
     private String URL;
     private String name;
     private String password;
-
-    public DBUtilAddUser(String URL) {
-        this.URL = URL;
+    private DataSource dataSource;
+    public DBUtilUser(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
+
+
 
     public void addDaneLogowania(DaneLogowania daneLogowania) throws Exception {
 
@@ -22,10 +25,10 @@ public class DBUtilAddUser extends DBUtil {
 
         try {
             // polaczenie z BD
-            conn = DriverManager.getConnection(URL, name, password);
+            conn = dataSource.getConnection();
 
             // zapytanie INSERT i ustawienie jego parametrow
-            String sql = "INSERT INTO dane_logowani(id_uzytkownika, email, haslo) " +
+            String sql = "INSERT INTO dane_logowania(id_uzytkownika, email, haslo) " +
                     "VALUES(?,?,?)";
 
             statement = conn.prepareStatement(sql);
