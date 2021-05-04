@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet("/CreateUserServlet")
 public class CreateUserServlet extends HttpServlet {
@@ -38,7 +41,6 @@ public class CreateUserServlet extends HttpServlet {
 
     }
 
-    //TODO zadanko- polaczyc mi create user html z servletem, nie potrafie znalezc bledu
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -52,18 +54,68 @@ public class CreateUserServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            addResort(request,response);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/create_user.html");
+            addUrzytkownik(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/created_user.html");
             dispatcher.forward(request, response);
+        } catch(SQLIntegrityConstraintViolationException sqle){
+            //            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/create_user.html");
+//            requestDispatcher.forward(request, response);
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('uzytkownik o takim id juz istnieje');");
+            //out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'create_user.html';");
+            out.println("</script>");
+
+            sqle.printStackTrace();
+
+        } catch (SQLException e) {
+
+//            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/create_user.html");
+//            requestDispatcher.forward(request, response);
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('niepoprawne id, powinna byc liczba calkowita');");
+            //out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'create_user.html';");
+            out.println("</script>");
+
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('blad polaczenia');");
+            //out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'create_user.html';");
+            out.println("</script>");
+
+            e.printStackTrace();
+
         } catch (Exception e) {
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('blad polaczenia');");
+            //out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'create_user.html';");
+            out.println("</script>");
+
             e.printStackTrace();
         }
     }
 
 
-    private void addResort(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void addUrzytkownik(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
         String id_uzytkownika = request.getParameter("employeeID");
