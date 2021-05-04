@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @WebServlet("/CreateUserServlet")
 public class CreateUserServlet extends HttpServlet {
@@ -121,10 +124,19 @@ public class CreateUserServlet extends HttpServlet {
         String id_uzytkownika = request.getParameter("employeeID");
         String email = request.getParameter("email");
         String haslo = request.getParameter("haslo");
+        String latapracy = request.getParameter("latapracy");
+        String mcepracy = request.getParameter("mcepracy");
+        String dateZ = request.getParameter("dateZ");
+        String wyksztalcenie = request.getParameter("wyksztalcenie");
+
+        LocalDate localDate = LocalDate.now();
+        LocalDate dateZd = LocalDate.parse(dateZ);
+        long iloscDni = DAYS.between(localDate,dateZd);
+
 
         // utworzenie obiektu klasy Phone
         DaneLogowania daneLogowania = new DaneLogowania(id_uzytkownika, email, haslo);
-
+        PracownikInfo pracownikInfo = new PracownikInfo(Integer.valueOf(id_uzytkownika),email,latapracy,mcepracy,dateZ,wyksztalcenie,10);
         // dodanie nowego obiektu do BD
         dbUtil.addDaneLogowania(daneLogowania);
 
