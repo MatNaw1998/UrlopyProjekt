@@ -75,7 +75,7 @@
     <div class="container-fluid">
 
         <div class="col-sm-9">
-            <a href="AdminServlet" class="btn btn-lg btn-primary" role="button" aria-disabled="true">Wróć do zestawienia</a>
+            <a href="LoginServlet" class="btn btn-lg btn-primary" role="button" aria-disabled="true">Wróć do zestawienia</a>
         </div>
     </div>
 </div>

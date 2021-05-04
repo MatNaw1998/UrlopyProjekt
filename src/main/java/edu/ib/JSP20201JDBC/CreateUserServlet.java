@@ -132,6 +132,9 @@ public class CreateUserServlet extends HttpServlet {
         LocalDate localDate = LocalDate.now();
         LocalDate dateZd = LocalDate.parse(dateZ);
         long iloscDni = DAYS.between(localDate,dateZd);
+        long innaPraca = Integer.parseInt(latapracy)*364 + Integer.parseInt(mcepracy)*30;
+
+
 
 
         // utworzenie obiektu klasy Phone
