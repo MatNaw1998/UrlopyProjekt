@@ -23,7 +23,7 @@
         <div class="navbar-header">
 
             <div class="style padding: 25 px">
-                <a class="navbar-brand" href="index.html">Strona Główna</a>
+                <a class="navbar-brand" href="index.html">Strona  Główna</a>
             </div>
 
         </div>
@@ -59,16 +59,16 @@
 
         <%-- definiowanie linkow--%>
 
-        <c:url var="zatwierdz" value="AdminServlet">
-            <c:param name="command" value="ZATWIERDZ"></c:param>
+<%--        <c:url var="zatwierdz" value="AdminServlet">--%>
+<%--            <c:param name="command" value="ZATWIERDZ"></c:param>--%>
+<%--            <c:param name="id" value="${uropList.id}"></c:param>--%>
+<%--        </c:url>--%>
+        <c:url var="modyfikacja" value="LoginServlet">
+            <c:param name="command" value="LOAD"></c:param>
             <c:param name="id" value="${uropList.id}"></c:param>
         </c:url>
-        <c:url var="odrzuc" value="AdminServlet">
-            <c:param name="command" value="ODRZUC"></c:param>
-            <c:param name="id" value="${uropList.id}"></c:param>
-        </c:url>
-        <c:url var="usun" value="AdminServlet">
-            <c:param name="command" value="USUN"></c:param>
+        <c:url var="usun" value="LoginServlet">
+            <c:param name="command" value="USUN"></c:param>--%>
             <c:param name="id" value="${uropList.id}"></c:param>
         </c:url>
 
@@ -79,18 +79,18 @@
             <td>${uropList.doU}</td>
             <td>${uropList.iloscDni}</td>
             <td>${uropList.statusU}</td>
-            <td><a href="${zatwierdz}">
-                <button type="button" class="btn btn-success">Zatwierdz</button>
+            <td><a href="${modyfikacja}">
+                <button type="button" class="btn btn-success">Zmodyfikuj</button>
             </a>
             </td>
-            <td>
-                <a href="${odrzuc}">
-                    <button type="button" class="btn btn-success">Odrzuc</button>
-                </a>
-            </td>
+<%--            <td>--%>
+<%--                <a href="${odrzuc}">--%>
+<%--                    <button type="button" class="btn btn-success">Odrzuc</button>--%>
+<%--                </a>--%>
+<%--            </td>--%>
             <td>
                 <a href="${usun}">
-                    <button type="button" class="btn btn-success">Usuń</button>
+                    <button name = "usun" type="button" class="btn btn-success">Usuń</button>
                 </a>
             </td>
         </tr>

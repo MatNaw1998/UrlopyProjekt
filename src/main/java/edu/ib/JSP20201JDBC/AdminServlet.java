@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -91,7 +89,7 @@ public class AdminServlet extends HttpServlet {
                     break;
 
                 case "ADD":
-                    addResort(request, response);
+                    addUrlop(request, response);
                     break;
 
                 case "ZATWIERDZ":
@@ -114,10 +112,10 @@ public class AdminServlet extends HttpServlet {
     }
 
 
-    private void addResort(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void addUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
-        String imieNazwisko = request.getParameter("imieNazwisko");
+        String imieNazwisko = request.getParameter("email");
         String od = request.getParameter("od");
         String doU = request.getParameter("doU");
         LocalDate odD = LocalDate.parse(od);
@@ -135,6 +133,8 @@ public class AdminServlet extends HttpServlet {
         listUrolps(request, response);
 
     }
+
+
 
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
