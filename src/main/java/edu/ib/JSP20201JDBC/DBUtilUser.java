@@ -29,7 +29,12 @@ public class DBUtilUser extends DBUtil {
             conn = dataSource.getConnection();
 
             // zapytanie SELECT
-            String sql = "SELECT * FROM daneUrlopu WHERE imieNazwisko = "+ email ;
+
+            String sql = "SELECT * FROM daneUrlopu WHERE email = '" + email +"'";
+
+            statement = conn.prepareStatement(sql);
+            //statement.setString(1, email);
+
             statement = conn.prepareStatement(sql);
             resultSet = statement.executeQuery(sql);
             // przetworzenie wyniku zapytania
@@ -37,7 +42,7 @@ public class DBUtilUser extends DBUtil {
 
                 // pobranie danych z rzedu
                 int id = resultSet.getInt("id");
-                String imieNazwisko = resultSet.getString("imieNazwisko");
+                String imieNazwisko = resultSet.getString("email");
                 String od = resultSet.getString("od");
                 String doU = resultSet.getString("doU");
                 Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
@@ -57,6 +62,34 @@ public class DBUtilUser extends DBUtil {
 
 
         return urlopies;
+    }
+
+    public void addUrlop(Urlopy urlopy) throws Exception {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+
+        try {
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie INSERT i ustawienie jego parametrow
+            String sql = "INSERT INTO daneUrlopu(email,od,doU,iloscDni,statusU) " +
+                    "VALUES(?,?,?,?,'Do akceptacji')";
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, String.valueOf(urlopy.getImieNazwisko()));
+            statement.setString(2, String.valueOf(urlopy.getOd()));
+            statement.setString(3, String.valueOf(urlopy.getDoU()));
+            statement.setLong(4, urlopy.getIloscDni());
+
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+            close(conn, statement, null);
+        }
     }
 
 
@@ -127,6 +160,34 @@ public class DBUtilUser extends DBUtil {
     }
     return daneLogowania;
     }
+
+    public void updateUsun(int id) throws Exception {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie UPDATE
+            String sql = "UPDATE daneUrlopu SET statusU='do usuniecia'" +
+                    "WHERE id =?";
+            statement = conn.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            // wykonanie zapytania
+            statement.execute();
+            System.out.println(statement.toString());
+        } finally {
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+        }
+
+    }
+
+
 
 
 

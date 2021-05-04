@@ -39,7 +39,7 @@ public class DBUtilAdmin extends DBUtil {
 
                 // pobranie danych z rzedu
                 int id = resultSet.getInt("id");
-                String imieNazwisko = resultSet.getString("imieNazwisko");
+                String imieNazwisko = resultSet.getString("email");
                 String od = resultSet.getString("od");
                 String doU = resultSet.getString("doU");
                 Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
@@ -71,7 +71,7 @@ public class DBUtilAdmin extends DBUtil {
             conn = DriverManager.getConnection(URL, name, password);
 
             // zapytanie INSERT i ustawienie jego parametrow
-            String sql = "INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) " +
+            String sql = "INSERT INTO daneUrlopu(email,od,doU,iloscDni,statusU) " +
                     "VALUES(?,?,?,?,'Do akceptacji')";
 
             statement = conn.prepareStatement(sql);

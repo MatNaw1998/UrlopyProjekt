@@ -41,7 +41,7 @@
     <div class="container">
         <h1>Wpisz dane nowego żądania</h1>
 
-        <form action="AdminServlet" method="get">
+        <form action="LoginServlet" method="addUrlop">
             <input type="hidden" name="command" value="ADD">
             <div class="form-group">
                 <label>name</label>
@@ -69,7 +69,7 @@
                     </script>
                 </label>
             </div>
-            <button type="submit" class="btn btn-info">Dodaj</button>
+            <button name = "dodajurlop" type="submit" class="btn btn-info">Dodaj</button>
         </form>
     </div>
 </div>
