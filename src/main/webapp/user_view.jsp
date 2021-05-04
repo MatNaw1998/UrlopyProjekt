@@ -8,27 +8,35 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          import="java.util.*" %>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Panel pracownika</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title>Rejestracja</title>
 </head>
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="css/main.css">
+<body >
 
-<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Super Pracka</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="user_login.html">Panel Pracownika</a>
+        <a class="p-2 text-dark" href="admin_login.html">Panel Kierownika</a>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    </nav>
+    <a class="btn btn-outline-primary" href="create_user.html">Utworz uzytkownika</a>
+</div>
+
+
+
+<div class="mx-3">
     <div class="container">
-        <div class="navbar-header">
-
-            <div class="style padding: 25 px">
-                <a class="navbar-brand" href="index.html">Strona  Główna</a>
-            </div>
-
-        </div>
-    </div>
-</nav>
 
 <div class="row form-group"></div>
 <div class="row form-group"></div>
@@ -117,5 +125,7 @@
             <a href="index.html" class="btn btn-lg btn-primary" role="button" aria-disabled="true">Wróć do strony
                 głównej</a>
         </div>
+    </div>
+</div>
     </div>
 </div>
