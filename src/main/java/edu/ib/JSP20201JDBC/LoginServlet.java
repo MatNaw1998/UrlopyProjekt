@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 
 @WebServlet("/LoginServlet")
@@ -62,7 +63,11 @@ public class LoginServlet extends HttpServlet {
             DaneLogowania daneLogowania = dbUtil.getKontoByLogin(login);
             if (daneLogowania.getHaslo().equals(haslo)) {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user_view.html");
+
+
+
                 requestDispatcher.forward(request, response);
+
             } else {
                 PrintWriter out = response.getWriter();
                 response.setContentType("text/html");

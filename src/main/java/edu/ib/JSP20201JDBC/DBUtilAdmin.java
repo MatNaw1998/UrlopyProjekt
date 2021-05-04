@@ -15,7 +15,6 @@ public class DBUtilAdmin extends DBUtil {
         this.URL = URL;
     }
 
-    //@Override
     public List<Urlopy> getUrlopy() throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
 

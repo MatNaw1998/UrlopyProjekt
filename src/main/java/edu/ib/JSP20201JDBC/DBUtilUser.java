@@ -2,6 +2,7 @@ package edu.ib.JSP20201JDBC;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBUtilUser extends DBUtil {
@@ -14,6 +15,49 @@ public class DBUtilUser extends DBUtil {
         this.dataSource = dataSource;
     }
 
+
+
+    public List<Urlopy> getUrlopy(String email) throws Exception {
+        List<Urlopy> urlopies = new ArrayList<>();
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie SELECT
+            String sql = "SELECT * FROM daneUrlopu WHERE imieNazwisko = "+ email ;
+            statement = conn.prepareStatement(sql);
+            resultSet = statement.executeQuery(sql);
+            // przetworzenie wyniku zapytania
+            while (resultSet.next()) {
+
+                // pobranie danych z rzedu
+                int id = resultSet.getInt("id");
+                String imieNazwisko = resultSet.getString("imieNazwisko");
+                String od = resultSet.getString("od");
+                String doU = resultSet.getString("doU");
+                Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
+                String statusU = resultSet.getString("statusU");
+
+
+                // dodanie do listy nowego obiektu
+                urlopies.add(new Urlopy(id,imieNazwisko,od,doU,iloscDni,statusU));
+
+            }
+
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, resultSet);
+        }
+
+
+        return urlopies;
+    }
 
 
     public void addDaneLogowania(DaneLogowania daneLogowania) throws Exception {
@@ -83,6 +127,8 @@ public class DBUtilUser extends DBUtil {
     }
     return daneLogowania;
     }
+
+
 
 
 }
