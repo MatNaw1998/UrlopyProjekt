@@ -19,7 +19,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class AdminServlet extends HttpServlet {
 
     private DBUtilAdmin dbUtil;
-    private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UCT";
+    private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
     @Override
@@ -46,7 +46,7 @@ public class AdminServlet extends HttpServlet {
         dbUtil.setName(name);
         dbUtil.setPassword(password);
 
-        if (validate(name, password)) {
+        if (dbUtil.validate(name, password)) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
 
             List<Urlopy> urlopyList = null;
@@ -94,10 +94,15 @@ public class AdminServlet extends HttpServlet {
                     addResort(request, response);
                     break;
 
-                case "DELETE":
-                    deleteUrop(request, response);
+                case "ZATWIERDZ":
+                    updateZatwierdz(request, response);
                     break;
-
+                case "ODRZUC":
+                    updateUdrzuc(request, response);
+                    break;
+                case "USUN":
+                    deleteUrlop(request, response);
+                    break;
                 default:
                     listUrolps(request, response);
             }
@@ -145,10 +150,11 @@ public class AdminServlet extends HttpServlet {
         dispatcher.forward(request, response);
 
     }
-    private void deleteUrop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
-        String id = request.getParameter("id");
+        int id = Integer.parseInt(request.getParameter("id"));
 
         // usuniecie telefonu z BD
         dbUtil.deleteUrlop(id);
@@ -158,31 +164,31 @@ public class AdminServlet extends HttpServlet {
 
     }
 
+    private void updateZatwierdz(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-    private boolean validate(String name, String pass) {
-        boolean status = false;
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        try {
+        // uaktualnienie danych w BD
+        dbUtil.updateZatwierdz(id);
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-
-        Connection conn = null;
-
-        try {
-
-            conn = DriverManager.getConnection(db_url, name, pass);
-            status = true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return status;
     }
+
+    private void updateUdrzuc(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        // uaktualnienie danych w BD
+        dbUtil.updateOdrzuc(id);
+
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
+
+    }
+
 
 }

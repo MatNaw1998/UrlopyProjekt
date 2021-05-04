@@ -53,12 +53,20 @@
                 <label> od </label>
                 <label>
                     <input type="date"   class="form-control" name="od"/>
+                    <script>
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementsByName("od")[0].setAttribute('min', today);
+                    </script>
                 </label>
             </div>
             <div class="form-group">
                 <label>do</label>
                 <label>
                     <input type="date"  class="form-control" name="doU"/>
+                    <script>
+                        var today = new Date().toISOString().split('T')[0];
+                        document.getElementsByName("doU")[0].setAttribute('min', today);
+                    </script>
                 </label>
             </div>
             <button type="submit" class="btn btn-info">Dodaj</button>

@@ -6,7 +6,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Urlopy {
 
-
+    private int id;
     private String imieNazwisko ;
     private String od;
     private String doU;
@@ -14,12 +14,29 @@ public class Urlopy {
     private String statusU;
 
 
+    public Urlopy(int id, String imieNazwisko, String od, String doU, Long iloscDni, String statusU) {
+        this.id = id;
+        this.imieNazwisko = imieNazwisko;
+        this.od = od;
+        this.doU = doU;
+        this.iloscDni = iloscDni;
+        this.statusU = statusU;
+    }
+
     public Urlopy(String imieNazwisko, String od, String doU, Long iloscDni, String statusU) {
         this.imieNazwisko = imieNazwisko;
         this.od = od;
         this.doU = doU;
         this.iloscDni = iloscDni;
         this.statusU = statusU;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getOd() {

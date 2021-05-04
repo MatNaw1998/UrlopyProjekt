@@ -15,7 +15,7 @@ public class DBUtilAdmin extends DBUtil {
         this.URL = URL;
     }
 
-    @Override
+    //@Override
     public List<Urlopy> getUrlopy() throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class DBUtilAdmin extends DBUtil {
 
 
                 // dodanie do listy nowego obiektu
-                urlopies.add(new Urlopy(imieNazwisko,od,doU,iloscDni,statusU));
+                urlopies.add(new Urlopy(id,imieNazwisko,od,doU,iloscDni,statusU));
 
             }
 
@@ -94,7 +94,59 @@ public class DBUtilAdmin extends DBUtil {
 
     }
 
-    public void deleteUrlop(String resort_name) throws Exception {
+
+    public void updateZatwierdz(int id) throws Exception {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = DriverManager.getConnection(URL, name, password);
+
+            // zapytanie UPDATE
+            String sql = "UPDATE daneUrlopu SET statusU='Zatwierdzone'" +
+                    "WHERE id =?";
+            statement = conn.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+        }
+
+    }
+
+    public void updateOdrzuc( int id ) throws Exception {
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = DriverManager.getConnection(URL, name, password);
+
+            // zapytanie UPDATE
+            String sql = "UPDATE daneUrlopu SET statusU='Odrzucone'" +
+                    "WHERE id =?";
+            statement = conn.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+        }
+    }
+
+
+    public void deleteUrlop(int id) throws Exception {
 
         Connection conn = null;
         PreparedStatement statement = null;
@@ -108,7 +160,7 @@ public class DBUtilAdmin extends DBUtil {
             String sql = "DELETE FROM daneUrlopu WHERE id =?";
 
             statement = conn.prepareStatement(sql);
-            statement.setString(1, resort_name);
+            statement.setInt(1, id);
 
             // wykonanie zapytania
             statement.execute();
@@ -122,6 +174,33 @@ public class DBUtilAdmin extends DBUtil {
 
     }
 
+    public boolean validate(String name, String pass) {
+        boolean status = false;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+
+        }
+
+        Connection conn = null;
+
+        try {
+
+            conn = DriverManager.getConnection(URL, name, pass);
+
+
+            status = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
 
 
     public void setName(String name) {
