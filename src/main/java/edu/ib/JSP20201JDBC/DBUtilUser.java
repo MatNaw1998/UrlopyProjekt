@@ -1,9 +1,7 @@
 package edu.ib.JSP20201JDBC;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.List;
 
 public class DBUtilUser extends DBUtil {
@@ -46,4 +44,45 @@ public class DBUtilUser extends DBUtil {
 
         }
     }
+
+    public DaneLogowania getKontoByLogin(String login){
+
+        DaneLogowania daneLogowania = null;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try{
+
+            conn = dataSource.getConnection();
+
+            String sql = "SELECT * FROM dane_logowania WHERE email like ?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1,login);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()){
+                String email = resultSet.getString("email");
+                String haslo = resultSet.getString("haslo");
+                int id_uzytkownika = resultSet.getInt("id_uzytkownika");
+
+                daneLogowania = new DaneLogowania(String.valueOf(id_uzytkownika),email,haslo);
+            }else {
+                throw new Exception("Could not find account with login :  " + login);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }finally {
+            close(conn,statement,resultSet);
+
+    }
+    return daneLogowania;
+    }
+
+
 }
