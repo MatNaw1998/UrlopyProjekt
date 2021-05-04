@@ -38,7 +38,6 @@ public class CreateUserServlet extends HttpServlet {
 
     }
 
-    //TODO zadanko- polaczyc mi create user html z servletem, nie potrafie znalezc bledu
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -54,16 +53,19 @@ public class CreateUserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            addResort(request,response);
+            addUrzytkownik(request,response);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/create_user.html");
             dispatcher.forward(request, response);
         } catch (Exception e) {
+
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/not_created_user.html");
+            requestDispatcher.forward(request, response);
             e.printStackTrace();
         }
     }
 
 
-    private void addResort(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private void addUrzytkownik(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
         String id_uzytkownika = request.getParameter("employeeID");
