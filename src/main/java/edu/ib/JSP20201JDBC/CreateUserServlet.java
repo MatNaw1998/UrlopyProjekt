@@ -119,8 +119,8 @@ public class CreateUserServlet extends HttpServlet {
 
         // odczytanie danych z formularza
         String id_uzytkownika = request.getParameter("employeeID");
-        String email = request.getParameter("password");
-        String haslo = request.getParameter("email");
+        String email = request.getParameter("email");
+        String haslo = request.getParameter("haslo");
 
         // utworzenie obiektu klasy Phone
         DaneLogowania daneLogowania = new DaneLogowania(id_uzytkownika, email, haslo);
