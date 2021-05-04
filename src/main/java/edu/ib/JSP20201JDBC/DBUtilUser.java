@@ -69,8 +69,8 @@ public class DBUtilUser extends DBUtil {
                 int id_uzytkownika = resultSet.getInt("id_uzytkownika");
 
                 daneLogowania = new DaneLogowania(String.valueOf(id_uzytkownika),email,haslo);
-            }else {
-                throw new Exception("Could not find account with login :  " + login);
+        /*    }else {
+                throw new Exception("Could not find account with login :  " + login); */
             }
 
         } catch (SQLException ex) {
