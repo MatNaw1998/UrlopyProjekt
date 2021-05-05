@@ -60,119 +60,12 @@ public class DBUtilAdmin extends DBUtil {
         return urlopies;
     }
 
-    public void addUrlop(Urlopy urlopy) throws Exception {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie INSERT i ustawienie jego parametrow
-            String sql = "INSERT INTO daneUrlopu(email,od,doU,iloscDni,statusU) " +
-                    "VALUES(?,?,?,?,'Do akceptacji')";
-
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, String.valueOf(urlopy.getImieNazwisko()));
-            statement.setString(2, String.valueOf(urlopy.getOd()));
-            statement.setString(3, String.valueOf(urlopy.getDoU()));
-            statement.setLong(4, urlopy.getIloscDni());
-
-
-            // wykonanie zapytania
-            statement.execute();
-
-
-        } finally {
-
-            close(conn, statement, null);
-
-        }
-
-    }
-
-
-    public void updateZatwierdz(int id) throws Exception {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "UPDATE daneUrlopu SET statusU='Zatwierdzone'" +
-                    "WHERE id =?";
-            statement = conn.prepareStatement(sql);
-
-            statement.setInt(1, id);
-            // wykonanie zapytania
-            statement.execute();
-
-        } finally {
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-        }
-
-    }
-
-    public void updateOdrzuc( int id ) throws Exception {
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "UPDATE daneUrlopu SET statusU='Odrzucone'" +
-                    "WHERE id =?";
-            statement = conn.prepareStatement(sql);
-
-            statement.setInt(1, id);
-            // wykonanie zapytania
-            statement.execute();
-
-        } finally {
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-        }
-    }
-
-
-    public void deleteUrlop(int id) throws Exception {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie DELETE
-            String sql = "DELETE FROM daneUrlopu WHERE id =?";
-
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
-
-            // wykonanie zapytania
-            statement.execute();
-
-        } finally {
-
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-
-        }
-
-    }
 
     public boolean validate(String name, String pass) {
+        //TODO sprawdz czy w  BAZIE DANYCH ADMINI isnieje uzytkownik o pass "pass", emal "name"
+        //to pod spodem sprawdza tylko czy mysql ma takiego uzytkownika
+
         boolean status = false;
 
         try {
