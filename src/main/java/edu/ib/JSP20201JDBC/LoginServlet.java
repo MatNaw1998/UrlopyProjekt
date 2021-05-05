@@ -149,7 +149,7 @@ public class LoginServlet extends HttpServlet {
         int dostepnyUrlop = pracownikInfo2.getIloscDni();
         int pozostalyUrlop = (int) (dostepnyUrlop -ilosc);
 
-        if (pozostalyUrlop>=dostepnyUrlop){
+        if (pozostalyUrlop>=0){
             // utworzenie obiektu klasy Phone
             Urlopy urlopy = new Urlopy(emial,od,doU,ilosc.intValue(),"do akceptacji");
 
