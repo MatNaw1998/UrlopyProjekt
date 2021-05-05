@@ -17,6 +17,10 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
+
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
@@ -27,6 +31,12 @@ public class AdminServlet extends HttpServlet {
 DBUtilPracwnikInfo dbUtilPracownikInfo;
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
+
+    /**
+     *
+     * @param config przy wywołaniu servletu wywołuje nawiązania z bazą danych
+     * @throws ServletException
+     */
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -41,6 +51,10 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         }
     }
 
+    /**
+     * Konstruktor bezparametrowy wykorzystywany do polaczenia się z baza poprzez urzytkownika Kierownik
+     */
+
     public AdminServlet() {
         Context initCtx = null;
         try {
@@ -48,7 +62,7 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_appKierownik"); //todo
+                    envCtx.lookup("jdbc/urlop_web_appKierownik");
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -56,6 +70,15 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
 
     }
 
+    /**
+     *
+     * @param request pobrane zadanie z pliku html, wykorzystane do zalogowania
+     * @param response odpowiedz ktora otrzymujemy
+     * @throws ServletException
+     * @throws IOException
+     *
+     * metoda wykrzystywana do zalogowania sie jako admin, oraz pobrania wartosci z tabeli przechowujacej dane o urlopach oraz wysalanie jej do pliku jsp
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
 
@@ -81,6 +104,17 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
             dispatcher.include(request, response);
         }
     }
+
+    /**
+     *
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws ServletException
+     * @throws IOException
+     *
+     * metoda do obslugi funkcjonalnosci strony kierownika, wyswietlanie listy urlopow, dodawanie urlopu, zatwierdzanie urlopu,odrzucanie i usuwanie.
+     *
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
 
@@ -97,10 +131,6 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
 
                 case "LIST":
                     listUrolps(request, response);
-                    break;
-
-                case "ADD":
-                    addUrlop(request, response);
                     break;
 
                 case "ZATWIERDZ":
@@ -123,30 +153,14 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
     }
 
 
-    private void addUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        // odczytanie danych z formularza
-        String imieNazwisko = request.getParameter("email");
-        String od = request.getParameter("od");
-        String doU = request.getParameter("doU");
-        LocalDate odD = LocalDate.parse(od);
-        LocalDate doD = LocalDate.parse(doU);
-        Long ilosc = DAYS.between(odD, doD);
-
-
-        // utworzenie obiektu klasy Phone
-        Urlopy urlopy = new Urlopy(imieNazwisko,od,doU,ilosc.intValue(),"do akceptacji");
-
-        // dodanie nowego obiektu do BD
-        dbUtilUrlopy.add(urlopy);
-
-        // powrot do listy
-        listUrolps(request, response);
-
-    }
-
-
-
+    /**
+     *
+     * @param request zadanie z http
+     * @param response odpowiedz do http
+     * @throws Exception
+     *
+     * metoda do wysietlania listy urlopow w tabeli
+     */
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<Urlopy> urlopyList = dbUtilUrlopy.getAll();
@@ -160,20 +174,13 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         // przekazanie do JSP
         dispatcher.forward(request, response);
     }
- /*
-    private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // odczytanie danych z formularza
-        int id = Integer.parseInt(request.getParameter("id"));
-
-        // usuniecie telefonu z BD
-        dbUtilUrlopy.delete(id);
-
-        // wyslanie danych do strony z lista telefonow
-        listUrolps(request, response);
-
-    }
-*/
+    /**
+     * metoda wykorzystywana  do zatwierdzania urlopu w zaleznosci od jego id w tabeli
+     * @param request zadanie z http
+     *  @param response odpowiedz do http
+     * @throws Exception
+     */
     private void updateZatwierdz(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -186,7 +193,12 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         listUrolps(request, response);
 
     }
-
+    /**
+     * metoda wykorzystywana  do odrzucania, zmiany statusu, nie ma wyplywu na ilosc pozostalego urlopu,zaleznosci od jego id w tabeli
+     * @param request zadanie z http
+     *  @param response odpowiedz do http
+     * @throws Exception
+     */
     private void updateUdrzuc(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -199,6 +211,12 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         listUrolps(request, response);
 
     }
+    /**
+     * metoda wykorzystywana  do usuwania urlopu zaleznosci od jego id w tabeli, ma wplyw na pozostaly urlop.
+     * @param request zadanie z http
+     *  @param response odpowiedz do http
+     * @throws Exception
+     */
   private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int dni;
         // odczytanie danych z formularza

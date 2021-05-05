@@ -6,15 +6,24 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 public class DBUtilAdmin extends DBUtil {
 
     private DataSource dataSource;
 
+    /**
+     * Konstruktor, wykorzysywany w laczeniu sie z baza
+     */
     public DBUtilAdmin(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-
+    /**
+     * Metoda zwracajaca obiekt DaneLogowania na bazie loginu, wykorzysywana przy sprawdzaniu poprawnosci danych.
+     * @return obiekt z danymi do logowania
+     */
     public DaneLogowania getAdminByLogin(String login){
         DaneLogowania daneLogowania = null;
         Connection conn = null;

@@ -4,17 +4,27 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 public class DBUtilUrlopy extends DBUtil {
 
     private String URL;
     private String name;
     private String password;
     private DataSource dataSource;
-
+    /**
+     * konstruktor do tworzenia obiektu DanychLogowania, wykorzysywany w laczeniu sie z baza
+     */
     public DBUtilUrlopy(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
+    /**
+     * metoda do pobierania wszystkich urlopow w tabeli
+     * @return zwraca liste urlopow
+     * @throws Exception
+     */
 
     public List<Urlopy> getAll() throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
@@ -62,6 +72,12 @@ public class DBUtilUrlopy extends DBUtil {
         return urlopies;
     }
 
+    /**
+     * metoda do zwracania urlopu w zaleznosci od jego id
+     * @param id szukane id
+     * @return zwraca obiekt z szukanym id
+     * @throws Exception
+     */
 
     public Urlopy getById(int id) throws Exception {
         Urlopy urlop = null;
@@ -115,39 +131,11 @@ public class DBUtilUrlopy extends DBUtil {
     }
 
 
-    public void add(Urlopy urlopy) throws Exception {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie INSERT i ustawienie jego parametrow
-            String sql = "INSERT INTO daneUrlopu(email,od,doU,iloscDni,statusU) " +
-                    "VALUES(?,?,?,?,'Do akceptacji')";
-
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, String.valueOf(urlopy.getEmail()));
-            statement.setString(2, String.valueOf(urlopy.getOd()));
-            statement.setString(3, String.valueOf(urlopy.getDoU()));
-            statement.setLong(4, urlopy.getIloscDni());
-
-
-            // wykonanie zapytania
-            statement.execute();
-
-
-        } finally {
-
-            close(conn, statement, null);
-
-        }
-
-    }
-
-
+    /**
+     * metoda wykorzystywana do aktualizowania statusu urolpu na zatwierdzony
+     * @param id id aktualizowanego urlopu
+     * @throws Exception
+     */
     public void updateZatwierdz(int id) throws Exception {
 
         Connection conn = null;
@@ -173,7 +161,11 @@ public class DBUtilUrlopy extends DBUtil {
         }
 
     }
-
+    /**
+     * metoda wykorzystywana do aktualizowania statusu urolpu na odrzucony
+     * @param id id aktualizowanego urlopu
+     * @throws Exception
+     */
     public void updateOdrzuc( int id ) throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
@@ -197,7 +189,11 @@ public class DBUtilUrlopy extends DBUtil {
             close(conn, statement, null);
         }
     }
-
+    /**
+     * metoda wykorzystywana do aktualizowania statusu urolpu na do usuniecia
+     * @param id id aktualizowanego urlopu
+     * @throws Exception
+     */
     public void updatePoprosOUsuniecie( int id ) throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
@@ -221,6 +217,12 @@ public class DBUtilUrlopy extends DBUtil {
             close(conn, statement, null);
         }
     }
+
+    /**
+     *metoda wykorzysywana do usuwania urlopu o danym id
+     * @param id id usuwanego urlopu
+     * @throws Exception
+     */
 
     public void delete(int id) throws Exception {
 

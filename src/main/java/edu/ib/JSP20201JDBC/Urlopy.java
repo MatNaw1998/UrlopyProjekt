@@ -4,13 +4,9 @@ import java.time.LocalDate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-
-//TODO
-// dodanie requesta o urlop zmniejsza pule urlopu
-//dodanie requesta o usuniecie nie zwieksza puli urlopu, dopoki admin nie zatwierdzi usuniecia
-// nie mozna zmodyfikowac zawierdzonego urlopu
-// for fun ogranac jak wyeksportowac urlopy na csv
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 
 public class Urlopy {
 
@@ -21,7 +17,9 @@ public class Urlopy {
     private int  iloscDni ;
     private String statusU;
 
-
+    /**
+     *konstruktor z wszystkimi danymi o urlopie
+     */
     public Urlopy(int id, String email, String od, String doU, int iloscDni, String statusU) {
         this.id = id;
         this.email = email;
@@ -31,6 +29,9 @@ public class Urlopy {
         this.statusU = statusU;
     }
 
+    /**
+     *konstruktr obiektu urlop bez id
+     */
     public Urlopy(String email, String od, String doU, int iloscDni, String statusU) {
         this.email = email;
         this.od = od;

@@ -18,7 +18,9 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 @WebServlet("/CreateUserServlet")
 public class CreateUserServlet extends HttpServlet {
 
@@ -27,6 +29,9 @@ public class CreateUserServlet extends HttpServlet {
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private DataSource dataSource;
 
+    /**
+     * metoda do nawiazywania polaczenia z baza, pobiera dane dla urzytkownika pracownik w bazie danych
+     */
     public CreateUserServlet() {
 
 // Obtain our environment naming context
@@ -44,7 +49,11 @@ public class CreateUserServlet extends HttpServlet {
 
 
     }
-
+    /**
+     *
+     * @param config przy wywołaniu servletu wywołuje nawiązania z bazą danych
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -59,14 +68,22 @@ public class CreateUserServlet extends HttpServlet {
         }
     }
 
+
+    /**
+     *
+     * @param request zadanie pobierane z http
+      * @param response odpowiedz wysylana do http
+     * @throws IOException
+     *
+     * metoda do tworzenia usera, w zaleznosci od bledu wyswietla komunikaty o bledzie.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             addUrzytkownik(request, response);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/created_user.html");
             dispatcher.forward(request, response);
         } catch(SQLIntegrityConstraintViolationException sqle){
-            //            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/create_user.html");
-//            requestDispatcher.forward(request, response);
+
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
 
@@ -80,8 +97,6 @@ public class CreateUserServlet extends HttpServlet {
 
         } catch (SQLException e) {
 
-//            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/create_user.html");
-//            requestDispatcher.forward(request, response);
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
 
@@ -119,7 +134,13 @@ public class CreateUserServlet extends HttpServlet {
         }
     }
 
-
+    /**
+     *
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     * metoda wykorzystywana do towrzenia nowego pracownika, w zaleznosi od podanych parametrow dodawane sa przyslugiwane dni wolne.
+     */
     private void addUrzytkownik(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int dniWolne = 0;
         // odczytanie danych z formularza
@@ -144,7 +165,7 @@ public class CreateUserServlet extends HttpServlet {
         }
 
 
-        // utworzenie obiektu klasy Phone
+        // utworzenie obiektu klas PracownikInfo oraz DaneLogowania
         DaneLogowania daneLogowania = new DaneLogowania(id_uzytkownika, email, haslo);
         PracownikInfo pracownikInfo = new PracownikInfo(Integer.parseInt(id_uzytkownika),email,latapracy,mcepracy,dateZ,wyksztalcenie,dniWolne);
         // dodanie nowego obiektu do BD

@@ -19,6 +19,9 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -31,6 +34,9 @@ public class LoginServlet extends HttpServlet {
     private PracownikInfo pracownikInfo2;
     private DaneLogowania daneLogowania2;
 
+    /**
+     * Konstruktor bezparametrowy wykorzystywany do polaczenia się z baza poprzez urzytkownika Pracownik
+     */
     public LoginServlet() {
 
         Context initCtx = null;
@@ -47,6 +53,11 @@ public class LoginServlet extends HttpServlet {
 
     }
 
+    /**
+     * nawiazanie z baza
+     * @param config przy wywołaniu servletu wywołuje nawiązania z bazą danych
+     * @throws ServletException
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -60,6 +71,14 @@ public class LoginServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
+
+    /**
+     * metoda wykorzytywana do ubslugiwania zdarzen na stronie, takich jak logowanie, dodawanie urlopu itd.
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws ServletException
+     * @throws IOException
+     */
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter("dodajurlop") !=null){
@@ -134,7 +153,12 @@ public class LoginServlet extends HttpServlet {
     }
 
 
-
+    /**
+     * Metoda dodajaca nowy urlop z danych pobranych z formularza
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     */
 
     private void addUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -175,9 +199,12 @@ public class LoginServlet extends HttpServlet {
     }
 
 
-
-
-
+    /**
+     * Sprawdzanie poprawnosci zalogowania sie urzytkownika, przekazanie informacji o tabeli uropow i ilosci dostepnych dni
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws IOException
+     */
 
     private void fillTable(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -227,6 +254,13 @@ public class LoginServlet extends HttpServlet {
         }
 
     }
+
+    /**
+     * Pobranie listy urlopwo dla dnaego urzytkownika
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     */
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<Urlopy> urlopyList = dbUtilUser.getUrlopy(emial);
@@ -246,6 +280,12 @@ public class LoginServlet extends HttpServlet {
 
     }
 
+    /**
+     * metoda odpowiadajaca za zmiane statusu urlopu na ,,do usuniecia".
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     */
     private void usunUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int dni;
         // odczytanie danych z formularza
@@ -257,6 +297,13 @@ public class LoginServlet extends HttpServlet {
         listUrolps(request, response);
 
     }
+
+    /**
+     * Metoda odpowiadająca za aktualizaowanie danych o urlopie pobranych z formularza, sprawdza czy zaktualizowany urlop nie jest za dlugi.
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     */
     private void updateUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -274,21 +321,42 @@ public class LoginServlet extends HttpServlet {
         // utworzenie nowego telefonu
         Urlopy urlopy2 = new Urlopy(id,emial,od,doU,ilosc.intValue(),"do akceptacji");
 
-        int diff = urlopy1.getIloscDni()-urlopy2.getIloscDni();
-        pracownikInfo2.getIloscDni();
 
+            int diff = urlopy1.getIloscDni() - urlopy2.getIloscDni();
+            pracownikInfo2.getIloscDni();
 
-        PracownikInfo pracownikInfo3 = pracownikInfo2;
-        pracownikInfo3.setIloscDni((pracownikInfo2.getIloscDni()+diff));
+        if ((pracownikInfo2.getIloscDni() + diff)>=0) {
+            PracownikInfo pracownikInfo3 = pracownikInfo2;
+            pracownikInfo3.setIloscDni((pracownikInfo2.getIloscDni() + diff));
 
-        // uaktualnienie danych w BD
-        dbUtilUser.updateUrlop(urlopy2);
-        dbUtilPracwnikInfo.update(pracownikInfo3);
+            // uaktualnienie danych w BD
+            dbUtilUser.updateUrlop(urlopy2);
+            dbUtilPracwnikInfo.update(pracownikInfo3);
 
-        // wyslanie danych do strony z lista telefonow
-        listUrolps(request, response);
+            // wyslanie danych do strony z lista telefonow
+            listUrolps(request, response);
 
+        }
+        else
+        {
+
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+            out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
+            out.println("alert('NIEPOPRAWNY ZAKRES');");
+            //  out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'update_urlop.jsp';");
+            out.println("</script>");
+
+        }
     }
+
+    /**
+     * pobranie danych o urlopie na bazie jego id z tabeli
+     * @param request zadanie pobierane z http
+     * @param response odpowiedz wysylana do http
+     * @throws Exception
+     */
 
     private void getUrlopById(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

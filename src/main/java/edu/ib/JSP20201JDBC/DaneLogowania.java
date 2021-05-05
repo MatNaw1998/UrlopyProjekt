@@ -1,8 +1,13 @@
 package edu.ib.JSP20201JDBC;
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 public class DaneLogowania {
     private String id_uzytkownika, email, haslo;
 
+    /**
+     * konstruktor do tworzenia obiektu DanychLogowania
+     */
     public DaneLogowania(String email, String haslo) {
         this.email = email;
         this.haslo = haslo;

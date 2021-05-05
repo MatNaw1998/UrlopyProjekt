@@ -4,19 +4,29 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 public class DBUtilUser extends DBUtil {
 
     private String URL;
     private String name;
     private String password;
     private DataSource dataSource;
+    /**
+     * Konstruktor, wykorzysywany w laczeniu sie z baza
+     */
     public DBUtilUser(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
 
-
+    /**
+     * Pobranie listy urlopow dla danego pracownika
+     * @param email email pracownika ktorego urlopow szukamy
+     * @return zwraca liste wszystkich urlopwo pracownika
+     * @throws Exception
+     */
     public List<Urlopy> getUrlopy(String email) throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
 
@@ -64,6 +74,11 @@ public class DBUtilUser extends DBUtil {
         return urlopies;
     }
 
+    /**
+     * metoda wykorzysywana do dodawania urlopow przez pracownika
+     * @param urlopy obiekt z formularza, nowy urlop
+     * @throws Exception
+     */
     public void addUrlop(Urlopy urlopy) throws Exception {
 
         Connection conn = null;
@@ -92,7 +107,11 @@ public class DBUtilUser extends DBUtil {
         }
     }
 
-
+    /**
+     * podczas rejestracji tworzony jest obiekt z danymi o pracowniku
+     * @param daneLogowania dane nowego pracownika
+     * @throws Exception
+     */
     public void addDaneLogowania(DaneLogowania daneLogowania) throws Exception {
 
         Connection conn = null;
@@ -123,8 +142,11 @@ public class DBUtilUser extends DBUtil {
     }
 
 
-
-
+    /**
+     * metoda wykorzystywana do szukania danych logowania w zaleznosci od loginu
+     * @param login podany w formularz login
+     * @return
+     */
     public DaneLogowania getKontoByLogin(String login){
 
         DaneLogowania daneLogowania = null;
@@ -164,7 +186,11 @@ public class DBUtilUser extends DBUtil {
     return daneLogowania;
     }
 
-
+    /**
+     * Metoda wykorzystywana przy aktualizowaniu przez pracownika urlopu
+     * @param urlopy dane pobrane z formularza i servletu
+     * @throws Exception
+     */
     public void updateUrlop(Urlopy urlopy) throws Exception {
 
         Connection conn = null;
@@ -203,8 +229,11 @@ public class DBUtilUser extends DBUtil {
     }
 
 
-
-
+    /**
+     * metoda do szukania urlopu w zaleznosci od jego id
+     * @param id id szukanego urlopu
+     * @return
+     */
     public Urlopy getUrlopById(int id){
         Urlopy urlop = null;
         Connection conn = null;

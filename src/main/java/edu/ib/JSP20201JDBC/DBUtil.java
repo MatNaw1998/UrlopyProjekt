@@ -12,6 +12,9 @@ public abstract class DBUtil {
 
 //     abstract List<Urlopy> getUrlopy() throws Exception;
 
+    /**
+     * Odpowiada za komunikację z bazą danych
+     */
     protected static void close(Connection conn, Statement statement, ResultSet resultSet) {
 
         try {

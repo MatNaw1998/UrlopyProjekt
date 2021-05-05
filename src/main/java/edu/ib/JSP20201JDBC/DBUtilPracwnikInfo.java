@@ -7,20 +7,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
 public class DBUtilPracwnikInfo extends DBUtil {
 
     private String URL;
     private String name;
     private String password;
     private DataSource dataSource;
+    /**
+     * konstruktor do tworzenia obiektu DanychLogowania, wykorzysywany w laczeniu sie z baza
+     */
     public DBUtilPracwnikInfo(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
 
-
-
+    /**
+     * Metoda do dodawania informacji o pracowniku, ilosci dni wolych, email itd.
+     * @param pracownikInfo pobiera obiekt klasy PracownikInfo azeby wyslac go do bazy danych
+     * @throws Exception
+     */
     public void add(PracownikInfo pracownikInfo) throws Exception {
 
         Connection conn = null;
@@ -54,7 +62,11 @@ public class DBUtilPracwnikInfo extends DBUtil {
         }
     }
 
-
+    /**
+     * metoda do aktualizacji danych o pracowniku
+     * @param pracownikInfo obiekt z pobranymi danymi do aktualizacji
+     * @throws Exception
+     */
     public void update(PracownikInfo pracownikInfo) throws Exception {
 
         Connection conn = null;
@@ -103,6 +115,11 @@ public class DBUtilPracwnikInfo extends DBUtil {
 
     }
 
+    /**
+     * Metoda do pobierania informacji o pracowniku w zaleznosci od jego id
+     * @param id szukne id
+     * @return zwraca szukany obiekt
+     */
 
     public PracownikInfo getById(int id){
         PracownikInfo pracownikInfo = null;
@@ -156,6 +173,11 @@ public class DBUtilPracwnikInfo extends DBUtil {
 
     }
 
+    /**
+     * Metoda do pobierania informacji o pracowniku w zaleznosci od jego email'a
+     * @param email szukany email
+     * @return zwraca obiekt z szukanym emailem
+     */
     public PracownikInfo getByEmail(String email){
         PracownikInfo pracownikInfo = null;
         Connection conn = null;

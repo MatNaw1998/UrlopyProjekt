@@ -1,5 +1,10 @@
 package edu.ib.JSP20201JDBC;
 
+
+/**
+ * @author Gabriela Wrona i Mateusz Nawrocki
+ */
+
 public class PracownikInfo {
     private int id;
     private String email;
@@ -9,6 +14,9 @@ public class PracownikInfo {
     private String wyksztalcenie;
     private int iloscDni;
 
+    /**
+     *Konstruktor z danymi o pracowniku
+     */
     public PracownikInfo(int id, String email, String latapracy, String mcepracy, String dateZ, String wyksztalcenie, int iloscDni) {
         this.id = id;
         this.email = email;
@@ -18,7 +26,9 @@ public class PracownikInfo {
         this.wyksztalcenie = wyksztalcenie;
         this.iloscDni = iloscDni;
     }
-
+    /**
+     *Konstruktor z danymi o pracowniku, bez id
+     */
     public PracownikInfo(String email, String latapracy, String mcepracy, String dateZ, String wyksztalcenie, int iloscDni) {
         this.email = email;
         this.latapracy = latapracy;
