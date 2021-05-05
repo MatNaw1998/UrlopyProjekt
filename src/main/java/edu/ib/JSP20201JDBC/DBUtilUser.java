@@ -342,6 +342,11 @@ public class DBUtilUser extends DBUtil {
 
     }
 
+
+    public void updatePracownikInfo(PracownikInfo pracownikInfo){
+        
+    }
+
     public PracownikInfo getPinfById(int id){
 
         PracownikInfo pracownikInfo = null;
