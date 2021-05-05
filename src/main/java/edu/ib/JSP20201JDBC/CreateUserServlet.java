@@ -119,7 +119,7 @@ public class CreateUserServlet extends HttpServlet {
 
 
     private void addUrzytkownik(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        int dniWolne = 0;
         // odczytanie danych z formularza
         String id_uzytkownika = request.getParameter("employeeID");
         String email = request.getParameter("email");
@@ -134,15 +134,20 @@ public class CreateUserServlet extends HttpServlet {
         long iloscDni = DAYS.between(localDate,dateZd);
         long innaPraca = Integer.parseInt(latapracy)*364 + Integer.parseInt(mcepracy)*30;
 
-
+        int staz = ((int) (iloscDni + innaPraca + (Integer.parseInt(wyksztalcenie)*364)))/364;
+        if (staz>=10){
+            dniWolne = 26;
+        }else {
+            dniWolne = 20;
+        }
 
 
         // utworzenie obiektu klasy Phone
         DaneLogowania daneLogowania = new DaneLogowania(id_uzytkownika, email, haslo);
-        PracownikInfo pracownikInfo = new PracownikInfo(Integer.valueOf(id_uzytkownika),email,latapracy,mcepracy,dateZ,wyksztalcenie,10);
+        PracownikInfo pracownikInfo = new PracownikInfo(Integer.parseInt(id_uzytkownika),email,latapracy,mcepracy,dateZ,wyksztalcenie,dniWolne);
         // dodanie nowego obiektu do BD
         dbUtil.addDaneLogowania(daneLogowania);
-
+        dbUtil.addPracownikInfo(pracownikInfo);
         // powrot do listy
 
 

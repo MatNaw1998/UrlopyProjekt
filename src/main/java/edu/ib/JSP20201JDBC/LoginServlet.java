@@ -138,6 +138,7 @@ public class LoginServlet extends HttpServlet {
         String em = null;
         try {
             DaneLogowania daneLogowania = dbUtil.getKontoByLogin(login);
+            PracownikInfo pracownikInfo = dbUtil.getPinfById(Integer.parseInt(daneLogowania.getId_uzytkownika()));
             urlopyList = dbUtil.getUrlopy(login);
             em = login;
             if (daneLogowania.getHaslo().equals(haslo)) {
@@ -145,7 +146,7 @@ public class LoginServlet extends HttpServlet {
 
 
                 request.setAttribute("URLOPY_LIST", urlopyList);
-                request.setAttribute("EMAIL", em);
+                request.setAttribute("ILOSC_DNI",pracownikInfo.getIloscDni());
                 requestDispatcher.forward(request, response);
                 emial = login;
 
