@@ -46,12 +46,14 @@
 
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">name</th>
+        <%-- th scope="col">id urlopu</th> --%>X
+
+        <th scope="col"> </th>
+        <th scope="col">email</th>
         <th scope="col">od</th>
         <th scope="col">do</th>
-        <th scope="col">ilosc</th>
-        <th scope="col">statusU</th>
+        <th scope="col">ilosc dni</th>
+        <th scope="col">status</th>
     </thead>
     <tbody>
 
@@ -68,7 +70,7 @@
             <c:param name="id" value="${uropList.id}"></c:param>
         </c:url>
         <c:url var="usun" value="LoginServlet">
-            <c:param name="command" value="USUN"></c:param>--%>
+            <c:param name="command" value="USUN"></c:param>
             <c:param name="id" value="${uropList.id}"></c:param>
         </c:url>
 

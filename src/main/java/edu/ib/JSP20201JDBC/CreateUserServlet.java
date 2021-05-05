@@ -22,7 +22,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @WebServlet("/CreateUserServlet")
 public class CreateUserServlet extends HttpServlet {
 
-    private DBUtilUser dbUtil;
+    private DBUtilUser dbUtilUser;
+    private DBUtilPracwnikInfo dbUtilPracownikInfo;
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private DataSource dataSource;
 
@@ -35,7 +36,7 @@ public class CreateUserServlet extends HttpServlet {
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app");
+                    envCtx.lookup("jdbc/urlop_web_app"); //todo
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -50,7 +51,8 @@ public class CreateUserServlet extends HttpServlet {
 
         try {
 
-            dbUtil = new DBUtilUser(dataSource);
+            dbUtilUser = new DBUtilUser(dataSource);
+            dbUtilPracownikInfo = new DBUtilPracwnikInfo(dataSource);
 
         } catch (Exception e) {
             throw new ServletException(e);
@@ -146,8 +148,8 @@ public class CreateUserServlet extends HttpServlet {
         DaneLogowania daneLogowania = new DaneLogowania(id_uzytkownika, email, haslo);
         PracownikInfo pracownikInfo = new PracownikInfo(Integer.parseInt(id_uzytkownika),email,latapracy,mcepracy,dateZ,wyksztalcenie,dniWolne);
         // dodanie nowego obiektu do BD
-        dbUtil.addDaneLogowania(daneLogowania);
-        dbUtil.addPracownikInfo(pracownikInfo);
+        dbUtilUser.addDaneLogowania(daneLogowania);
+        dbUtilPracownikInfo.add(pracownikInfo);
         // powrot do listy
 
 

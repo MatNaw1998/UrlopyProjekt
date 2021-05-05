@@ -1,5 +1,8 @@
 package edu.ib.JSP20201JDBC;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -7,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -16,21 +20,45 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
-    private DBUtilAdmin dbUtil;
+    private DataSource dataSource;
+    private DBUtilAdmin dbUtilAdmin;
+    private DBUtilUrlopy dbUtilUrlopy;
+
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
+        Context initCtx = null;
         try {
+            initCtx = new InitialContext();
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-            dbUtil = new DBUtilAdmin(db_url);
+            dataSource = (DataSource)
+                    envCtx.lookup("jdbc/urlop_web_app"); //todo
+
+            dbUtilUrlopy = new DBUtilUrlopy(dataSource);
+            dbUtilAdmin = new DBUtilAdmin(dataSource);
 
         } catch (Exception e) {
             throw new ServletException(e);
         }
+    }
+
+    public AdminServlet() {
+        Context initCtx = null;
+        try {
+            initCtx = new InitialContext();
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            // Look up our data source
+            dataSource = (DataSource)
+                    envCtx.lookup("jdbc/urlop_web_app"); //todo
+
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws
@@ -41,17 +69,15 @@ public class AdminServlet extends HttpServlet {
         String name = request.getParameter("loginInput");
         String password = request.getParameter("passwordInput");
 
-        dbUtil.setName(name);
-        dbUtil.setPassword(password);
 
-        if (dbUtil.validate(name, password)) {
+        if (dbUtilAdmin.validate(name, password)) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
 
             List<Urlopy> urlopyList = null;
 
             try {
 
-                urlopyList = dbUtil.getUrlopy();
+                urlopyList = dbUtilUrlopy.getAll();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,10 +150,10 @@ public class AdminServlet extends HttpServlet {
 
 
         // utworzenie obiektu klasy Phone
-        Urlopy urlopy = new Urlopy(imieNazwisko,od,doU,ilosc,"do akceptacji");
+        Urlopy urlopy = new Urlopy(imieNazwisko,od,doU,ilosc.intValue(),"do akceptacji");
 
         // dodanie nowego obiektu do BD
-        dbUtil.addUrlop(urlopy);
+        dbUtilUrlopy.add(urlopy);
 
         // powrot do listy
         listUrolps(request, response);
@@ -138,7 +164,7 @@ public class AdminServlet extends HttpServlet {
 
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        List<Urlopy> urlopyList = dbUtil.getUrlopy();
+        List<Urlopy> urlopyList = dbUtilUrlopy.getAll();
 
         // dodanie listy do obiektu zadania
         request.setAttribute("URLOPY_LIST", urlopyList);
@@ -157,7 +183,7 @@ public class AdminServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         // usuniecie telefonu z BD
-        dbUtil.deleteUrlop(id);
+        dbUtilUrlopy.delete(id);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);
@@ -170,7 +196,7 @@ public class AdminServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         // uaktualnienie danych w BD
-        dbUtil.updateZatwierdz(id);
+        dbUtilUrlopy.updateZatwierdz(id);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);
@@ -183,7 +209,7 @@ public class AdminServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         // uaktualnienie danych w BD
-        dbUtil.updateOdrzuc(id);
+        dbUtilUrlopy.updateOdrzuc(id);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);

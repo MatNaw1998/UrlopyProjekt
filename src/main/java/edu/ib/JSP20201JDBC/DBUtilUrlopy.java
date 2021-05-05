@@ -2,19 +2,21 @@ package edu.ib.JSP20201JDBC;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBUtilAdmin extends DBUtil {
+public class DBUtilUrlopy extends DBUtil {
 
+    private String URL;
+    private String name;
+    private String password;
     private DataSource dataSource;
 
-    public DBUtilAdmin(DataSource dataSource) {
+    public DBUtilUrlopy(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public List<Urlopy> getUrlopy() throws Exception {
+    public List<Urlopy> getAll() throws Exception {
         List<Urlopy> urlopies = new ArrayList<>();
 
         Connection conn = null;
@@ -60,7 +62,60 @@ public class DBUtilAdmin extends DBUtil {
         return urlopies;
     }
 
-    public void addUrlop(Urlopy urlopy) throws Exception {
+
+    public Urlopy getById(int id) throws Exception {
+        Urlopy urlop = null;
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie SELECT
+            String sql = "SELECT * FROM daneUrlopu where id=?";
+            statement = conn.prepareStatement(sql);
+
+            System.out.println( statement);
+            statement.setInt(1, id);
+
+            System.out.println( statement);
+            // wykonanie zapytania
+            resultSet = statement.executeQuery();
+            System.out.println("executed");
+            // przetworzenie wyniku zapytania
+            if (resultSet.next()) {
+
+                System.out.println("if");
+                // pobranie danych z rzedu
+
+                String imieNazwisko = resultSet.getString("email");
+                String od = resultSet.getString("od");
+                String doU = resultSet.getString("doU");
+                int iloscDni = Integer.parseInt(resultSet.getString("iloscDni"));
+                String statusU = resultSet.getString("statusU");
+
+
+                // dodanie do listy nowego obiektu
+                urlop = new Urlopy(id,imieNazwisko,od,doU,iloscDni,statusU);
+
+            }
+
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, resultSet);
+        }
+
+
+        return urlop;
+    }
+
+
+    public void add(Urlopy urlopy) throws Exception {
 
         Connection conn = null;
         PreparedStatement statement = null;
@@ -144,7 +199,7 @@ public class DBUtilAdmin extends DBUtil {
     }
 
 
-    public void deleteUrlop(int id) throws Exception {
+    public void delete(int id) throws Exception {
 
         Connection conn = null;
         PreparedStatement statement = null;
@@ -171,7 +226,7 @@ public class DBUtilAdmin extends DBUtil {
         }
 
     }
-
+/*
     public boolean validate(String name, String pass) {
         boolean status = false;
 
@@ -188,7 +243,7 @@ public class DBUtilAdmin extends DBUtil {
 
         try {
 
-            conn = dataSource.getConnection();
+            conn = DriverManager.getConnection(URL, name, pass);
 
 
             status = true;
@@ -199,5 +254,13 @@ public class DBUtilAdmin extends DBUtil {
 
         return status;
     }
+*/
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -10,11 +10,11 @@ public class Urlopy {
     private String imieNazwisko ;
     private String od;
     private String doU;
-    private Long  iloscDni ;
+    private int  iloscDni ;
     private String statusU;
 
 
-    public Urlopy(int id, String imieNazwisko, String od, String doU, Long iloscDni, String statusU) {
+    public Urlopy(int id, String imieNazwisko, String od, String doU, int iloscDni, String statusU) {
         this.id = id;
         this.imieNazwisko = imieNazwisko;
         this.od = od;
@@ -23,7 +23,7 @@ public class Urlopy {
         this.statusU = statusU;
     }
 
-    public Urlopy(String imieNazwisko, String od, String doU, Long iloscDni, String statusU) {
+    public Urlopy(String imieNazwisko, String od, String doU, int iloscDni, String statusU) {
         this.imieNazwisko = imieNazwisko;
         this.od = od;
         this.doU = doU;
@@ -64,11 +64,11 @@ public class Urlopy {
     }
 
 
-    public Long getIloscDni() {
+    public int getIloscDni() {
         return iloscDni;
     }
 
-    public void setIloscDni(Long iloscDni) {
+    public void setIloscDni(int iloscDni) {
         this.iloscDni = iloscDni;
     }
 

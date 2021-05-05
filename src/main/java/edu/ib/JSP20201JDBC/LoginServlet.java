@@ -23,7 +23,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    private DBUtilUser dbUtil;
+    private DBUtilUser dbUtilUser;
+    private DBUtilUrlopy dbUtilUrlopy;
+    private DBUtilPracwnikInfo dbUtilPracwnikInfo;
     private DataSource dataSource;
     private String emial;
     private PracownikInfo pracownikInfo2;
@@ -37,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app");
+                    envCtx.lookup("jdbc/urlop_web_app"); //todo
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -51,8 +53,9 @@ public class LoginServlet extends HttpServlet {
 
         try {
 
-            dbUtil = new DBUtilUser(dataSource);
-
+            dbUtilUser = new DBUtilUser(dataSource);
+            dbUtilPracwnikInfo = new DBUtilPracwnikInfo(dataSource);
+            dbUtilUrlopy = new DBUtilUrlopy(dataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -74,8 +77,27 @@ public class LoginServlet extends HttpServlet {
                 out.println("</script>");
             }
         }
+        else if (request.getParameter("usun") !=null){
+            try {
+                usunUrlop(request, response);
+            } catch (Exception e) {
+            /*RequestDispatcher requestDispatcher = request.getRequestDispatcher("/not_created_user.html");
+            requestDispatcher.forward(request, response);*/
+                PrintWriter out = response.getWriter();
+                response.setContentType("text/html");
+                out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
+                out.println("alert('Zle dodawanie');");
+                //  out.println("window.location.assign('user_login.html';");
+                out.println("window.location = 'add_phone_form.jsp';");
+                out.println("</script>");
+            }
+        }
         else if (request.getParameter("loginuser")!=null){
-            loginUser(request, response);
+            try {
+                fillTable(request, response);
+            } catch (IOException e) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("add_phone_form.jsp");
+            }
         }
         else {
             try {
@@ -92,7 +114,7 @@ public class LoginServlet extends HttpServlet {
                         listUrolps(request, response);
                         break;
                     case "USUN":
-                        updateUsun(request, response);
+                        usunUrlop(request, response);
                         break;
                     case "LOAD":
                         getUrlopById(request, response);
@@ -111,6 +133,9 @@ public class LoginServlet extends HttpServlet {
 
     }
 
+
+
+
     private void addUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -119,20 +144,24 @@ public class LoginServlet extends HttpServlet {
         LocalDate odD = LocalDate.parse(od);
         LocalDate doD = LocalDate.parse(doU);
         Long ilosc = DAYS.between(odD, doD);
+
+
         int dostepnyUrlop = pracownikInfo2.getIloscDni();
-        System.out.println("iloscDni:" + dostepnyUrlop);
         int pozostalyUrlop = (int) (dostepnyUrlop -ilosc);
-        System.out.println("pozostaly urlop:" + pozostalyUrlop);
+
         if (pozostalyUrlop>=0){
             // utworzenie obiektu klasy Phone
-            Urlopy urlopy = new Urlopy(emial,od,doU,ilosc,"do akceptacji");
+            Urlopy urlopy = new Urlopy(emial,od,doU,ilosc.intValue(),"do akceptacji");
 
             pracownikInfo2.setIloscDni(pozostalyUrlop);
-            dbUtil.updatePracownikInfo(pracownikInfo2);
+            dbUtilPracwnikInfo.update(pracownikInfo2);
+
             // dodanie nowego obiektu do BD
-            dbUtil.addUrlop(urlopy);
+            dbUtilUser.addUrlop(urlopy);
+
             // powrot do listy
             listUrolps(request, response);
+
         }else{
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
@@ -147,17 +176,20 @@ public class LoginServlet extends HttpServlet {
 
 
 
-    private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+
+
+    private void fillTable(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String login = request.getParameter("loginInput");
         String haslo = request.getParameter("passwordInput");
         List<Urlopy> urlopyList = null;
         try {
-            DaneLogowania daneLogowania = dbUtil.getKontoByLogin(login);
-            PracownikInfo pracownikInfo = dbUtil.getPinfById(Integer.parseInt(daneLogowania.getId_uzytkownika()));
+            DaneLogowania daneLogowania = dbUtilUser.getKontoByLogin(login);
+            PracownikInfo pracownikInfo = dbUtilPracwnikInfo.getById(Integer.parseInt(daneLogowania.getId_uzytkownika()));
             daneLogowania2 = daneLogowania;
             pracownikInfo2 = pracownikInfo;
-            urlopyList = dbUtil.getUrlopy(login);
+            urlopyList = dbUtilUser.getUrlopy(login);
             if (daneLogowania.getHaslo().equals(haslo)) {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user_view.jsp");
 
@@ -197,8 +229,8 @@ public class LoginServlet extends HttpServlet {
     }
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        List<Urlopy> urlopyList = dbUtil.getUrlopy(emial);
-        PracownikInfo pracownikInfo = dbUtil.getPinfById(Integer.parseInt(daneLogowania2.getId_uzytkownika()));
+        List<Urlopy> urlopyList = dbUtilUser.getUrlopy(emial);
+        PracownikInfo pracownikInfo = dbUtilPracwnikInfo.getById(Integer.parseInt(daneLogowania2.getId_uzytkownika()));
         pracownikInfo2 = pracownikInfo;
 
         // dodanie listy do obiektu zadania
@@ -214,13 +246,20 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    private void updateUsun(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+    private void usunUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int dni;
         // odczytanie danych z formularza
         int id = Integer.parseInt(request.getParameter("id"));
-
+         dni = dbUtilUrlopy.getById(id).getIloscDni();
+         int d = pracownikInfo2.getIloscDni()+dni;
+         pracownikInfo2.setIloscDni(d);
         // uaktualnienie danych w BD
-        dbUtil.updateUsun(id);
+        dbUtilPracwnikInfo.update(pracownikInfo2);
+        dbUtilUrlopy.delete(id);
+        //<todo zwiekszenie pulidostepnych dni
+        //<wyciagnij mi z bazy ile dni mial usuwany urlop i update user info
+
+
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);
@@ -239,10 +278,10 @@ public class LoginServlet extends HttpServlet {
 
 
         // utworzenie nowego telefonu
-        Urlopy urlopy = new Urlopy(id,emial,od,doU,ilosc,"do akceptacji");
+        Urlopy urlopy = new Urlopy(id,emial,od,doU,ilosc.intValue(),"do akceptacji");
 
         // uaktualnienie danych w BD
-        dbUtil.updateUrlop(urlopy);
+        dbUtilUser.updateUrlop(urlopy);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);
@@ -253,7 +292,7 @@ public class LoginServlet extends HttpServlet {
 
         String id = request.getParameter("id");
 
-        Urlopy urlopy = dbUtil.getUrlopById(Integer.parseInt(id));
+        Urlopy urlopy = dbUtilUser.getUrlopById(Integer.parseInt(id));
 
         request.setAttribute("URLOP",urlopy);
 
