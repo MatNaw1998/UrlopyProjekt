@@ -26,6 +26,8 @@ public class LoginServlet extends HttpServlet {
     private DBUtilUser dbUtil;
     private DataSource dataSource;
     private String emial;
+    private PracownikInfo pracownikInfo2;
+    private DaneLogowania daneLogowania2;
 
     public LoginServlet() {
 
@@ -66,9 +68,9 @@ public class LoginServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 response.setContentType("text/html");
                 out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
-                out.println("alert('NIEPOPRAWNY LOGIN');");
+                out.println("alert('Zle dodawanie');");
                 //  out.println("window.location.assign('user_login.html';");
-                out.println("window.location = 'user_login.html';");
+                out.println("window.location = 'add_phone_form.jsp';");
                 out.println("</script>");
             }
         }
@@ -117,30 +119,43 @@ public class LoginServlet extends HttpServlet {
         LocalDate odD = LocalDate.parse(od);
         LocalDate doD = LocalDate.parse(doU);
         Long ilosc = DAYS.between(odD, doD);
+        int dostepnyUrlop = pracownikInfo2.getIloscDni();
+        System.out.println("iloscDni:" + dostepnyUrlop);
+        int pozostalyUrlop = (int) (dostepnyUrlop -ilosc);
+        System.out.println("roznica:" + pozostalyUrlop);
+        if (pozostalyUrlop>=0){
+            // utworzenie obiektu klasy Phone
+            Urlopy urlopy = new Urlopy(emial,od,doU,ilosc,"do akceptacji");
 
-
-        // utworzenie obiektu klasy Phone
-        Urlopy urlopy = new Urlopy(emial,od,doU,ilosc,"do akceptacji");
-
-        // dodanie nowego obiektu do BD
-        dbUtil.addUrlop(urlopy);
-
-        // powrot do listy
-        listUrolps(request, response);
-
+            // dodanie nowego obiektu do BD
+        //    dbUtil.updateIloscDni(pozostalyUrlop,pracownikInfo2.getId());
+            dbUtil.addUrlop(urlopy);
+            // powrot do listy
+            listUrolps(request, response);
+        }else{
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+            out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
+            out.println("alert('ZBYT DLUGI URLOP');");
+            //  out.println("window.location.assign('user_login.html';");
+            out.println("window.location = add_phone_form.jsp';");
+            out.println("</script>");
+        }
     }
+
+
 
     private void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String login = request.getParameter("loginInput");
         String haslo = request.getParameter("passwordInput");
         List<Urlopy> urlopyList = null;
-        String em = null;
         try {
             DaneLogowania daneLogowania = dbUtil.getKontoByLogin(login);
             PracownikInfo pracownikInfo = dbUtil.getPinfById(Integer.parseInt(daneLogowania.getId_uzytkownika()));
+            daneLogowania2 = daneLogowania;
+            pracownikInfo2 = pracownikInfo;
             urlopyList = dbUtil.getUrlopy(login);
-            em = login;
             if (daneLogowania.getHaslo().equals(haslo)) {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("/user_view.jsp");
 
@@ -181,9 +196,13 @@ public class LoginServlet extends HttpServlet {
     private void listUrolps(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<Urlopy> urlopyList = dbUtil.getUrlopy(emial);
+        PracownikInfo pracownikInfo = dbUtil.getPinfById(Integer.parseInt(daneLogowania2.getId_uzytkownika()));
+        pracownikInfo2 = pracownikInfo;
 
         // dodanie listy do obiektu zadania
         request.setAttribute("URLOPY_LIST", urlopyList);
+        request.setAttribute("ILOSC_DNI",pracownikInfo.getIloscDni());
+
 
         // dodanie request dispatcher
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user_view.jsp");

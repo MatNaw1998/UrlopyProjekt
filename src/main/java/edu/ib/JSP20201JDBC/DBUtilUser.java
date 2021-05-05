@@ -253,9 +253,42 @@ public class DBUtilUser extends DBUtil {
             // zamkniecie obiektow JDBC
             close(conn, statement, null);
 
+
         }
 
     }
+
+    public void updateIloscDni(int ilosc, int id) throws SQLException {
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie UPDATE
+            String sql = "UPDATE pracownikinfo SET iloscDni=?" +
+                    "WHERE id =?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, ilosc);
+            statement.setInt(2, id);
+
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+
+
+        }
+
+    }
+
 
     public Urlopy getUrlopById(int id){
         Urlopy urlop = null;

@@ -104,7 +104,7 @@
 
 <div class="col-sm-9">
     <p><a class="btn btn-primary btn-info" href="add_phone_form.jsp" role="button">Dodaj żądanie</a></p>
-    <p class="lead">Dostępne dni:</p>
+    <p class="lead">Dostępne dni :   ${ILOSC_DNI}</p>
 
 </div>
 
