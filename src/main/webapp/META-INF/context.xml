@@ -17,7 +17,7 @@
     <Resource name="jdbc/urlop_web_appPracownik"
               auth="Container" type="javax.sql.DataSource"
               maxActive="20" maxIdle="5" maxWait="10000"
-              username="pracownik" password="pracownik"
+              username="pracUrlopy" password="pracUrlopy"
               driverClassName="com.mysql.cj.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/projektUrlop?serverTimezone=UCT" />
 

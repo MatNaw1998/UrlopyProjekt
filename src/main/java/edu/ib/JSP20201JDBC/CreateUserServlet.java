@@ -36,7 +36,7 @@ public class CreateUserServlet extends HttpServlet {
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app"); //todo
+                    envCtx.lookup("jdbc/urlop_web_appPracownik"); //todo
 
         } catch (NamingException e) {
             e.printStackTrace();
