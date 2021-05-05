@@ -55,32 +55,6 @@ public class DBUtilPracwnikInfo extends DBUtil {
     }
 
 
-
-    public void delete(int id) throws Exception {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "DELETE from pracownikinfo WHERE id =?";
-
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
-            // wykonanie zapytania
-            statement.execute();
-            System.out.println(statement.toString());
-        } finally {
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-        }
-
-    }
-
     public void update(PracownikInfo pracownikInfo) throws Exception {
 
         Connection conn = null;
@@ -129,71 +103,7 @@ public class DBUtilPracwnikInfo extends DBUtil {
 
     }
 
-    public void updateIloscDni(int ilosc, int id) throws SQLException {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "UPDATE pracownikinfo SET iloscDni=?" +
-                    "WHERE id =?";
-
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, ilosc);
-            statement.setInt(2, id);
-
-            // wykonanie zapytania
-            statement.execute();
-
-
-        } finally {
-
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-
-
-        }
-
-    }
-/*
-    public void updateIloscDni(PracownikInfo pracownikInfo) throws SQLException {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "UPDATE pracownikinfo SET iloscDni=?" +
-                    "WHERE id =?";
-
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, pracownikInfo.getIloscDni());
-            statement.setInt(2, pracownikInfo.getId());
-
-            // wykonanie zapytania
-            statement.execute();
-
-
-        } finally {
-
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-
-
-        }
-
-    }
-
-*/
     public PracownikInfo getById(int id){
         PracownikInfo pracownikInfo = null;
         Connection conn = null;
@@ -217,7 +127,6 @@ public class DBUtilPracwnikInfo extends DBUtil {
             // przetworzenie wyniku zapytania
 
             if (resultSet.next()) {
-////id, email, latapracy,mcepracy,dataZ,wyksztalcenie,iloscDni
                 String email = resultSet.getString("email");
                 String latapracy = resultSet.getString("latapracy");
                 String mcepracy = resultSet.getString("mcepracy");
@@ -303,61 +212,6 @@ public class DBUtilPracwnikInfo extends DBUtil {
     }
 
 
-
-/*
-    public PracownikInfo getPinfById(int id){
-
-        PracownikInfo pracownikInfo = null;
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie SELECT
-            String sql = "SELECT * FROM pracownikInfo WHERE id =?";
-
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, id);
-            System.out.println(statement.toString());
-            // wykonanie zapytania
-            resultSet = statement.executeQuery();
-            System.out.println(resultSet.toString());
-            // przetworzenie wyniku zapytania
-
-            if (resultSet.next()) {
-                String email = resultSet.getString("email");
-                String latapracy = resultSet.getString("latapracy");
-                String mcepracy = resultSet.getString("mcepracy");
-                String dataZ = resultSet.getString("dataZ");
-                String wyksztalcenie = resultSet.getString("wyksztalcenie");
-                int iloscD = resultSet.getInt("iloscDni");
-
-
-                // utworzenie obiektu
-                pracownikInfo = new PracownikInfo(id, email, latapracy, mcepracy, dataZ, wyksztalcenie,iloscD);
-
-            } else {
-                throw new Exception("Could not find phone with id " + id);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-            // zamkniecie obiektow JDBC
-            close(conn, statement, resultSet);
-
-        }
-        return pracownikInfo;
-
-    }
-*/
 
 
 

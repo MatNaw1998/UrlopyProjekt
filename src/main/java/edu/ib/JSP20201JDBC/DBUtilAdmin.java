@@ -14,83 +14,35 @@ public class DBUtilAdmin extends DBUtil {
         this.dataSource = dataSource;
     }
 
-    public List<Urlopy> getUrlopy() throws Exception {
-        List<Urlopy> urlopies = new ArrayList<>();
 
+    public DaneLogowania getAdminByLogin(String login){
+        DaneLogowania daneLogowania = null;
         Connection conn = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
 
-        try {
-
-            // polaczenie z BD
+        try{
             conn = dataSource.getConnection();
+            String sql = "SELECT * FROM dane_logowania_admin WHERE email like ?";
+            statement = conn.prepareStatement(sql);
+            statement.setString(1,login);
+            resultSet = statement.executeQuery();
 
-            // zapytanie SELECT
-            String sql = "SELECT * FROM daneUrlopu";
-            statement = conn.createStatement();
+            if (resultSet.next()){
+                String email = resultSet.getString("email");
+                String haslo = resultSet.getString("haslo");
+                int id_amin = resultSet.getInt("id_admina");
 
-            // wykonanie zapytania SQL
-            resultSet = statement.executeQuery(sql);
-
-            // przetworzenie wyniku zapytania
-            while (resultSet.next()) {
-
-                // pobranie danych z rzedu
-                int id = resultSet.getInt("id");
-                String imieNazwisko = resultSet.getString("email");
-                String od = resultSet.getString("od");
-                String doU = resultSet.getString("doU");
-                Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
-                String statusU = resultSet.getString("statusU");
-
-
-                // dodanie do listy nowego obiektu
-                urlopies.add(new Urlopy(id,imieNazwisko,od,doU,iloscDni.intValue(),statusU));
-
+                daneLogowania = new DaneLogowania(String.valueOf(id_amin),email,haslo);
             }
 
-        } finally {
-
-            // zamkniecie obiektow JDBC
-            close(conn, statement, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            close(conn,statement,resultSet);
         }
-
-
-        return urlopies;
+        return daneLogowania;
     }
 
-
-
-    public boolean validate(String name, String pass) {
-        //TODO sprawdz czy w  BAZIE DANYCH ADMINI isnieje uzytkownik o pass "pass", emal "name"
-        //to pod spodem sprawdza tylko czy mysql ma takiego uzytkownika
-
-        boolean status = false;
-
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-
-        Connection conn = null;
-
-        try {
-
-            conn = dataSource.getConnection();
-
-
-            status = true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return status;
-    }
 
 }

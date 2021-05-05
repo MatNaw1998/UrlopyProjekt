@@ -164,31 +164,6 @@ public class DBUtilUser extends DBUtil {
     return daneLogowania;
     }
 
-    public void updateUsun(int id) throws Exception {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-
-        try {
-
-            // polaczenie z BD
-            conn = dataSource.getConnection();
-
-            // zapytanie UPDATE
-            String sql = "UPDATE daneUrlopu SET statusU='do usuniecia'" +
-                    "WHERE id =?";
-            statement = conn.prepareStatement(sql);
-
-            statement.setInt(1, id);
-            // wykonanie zapytania
-            statement.execute();
-            System.out.println(statement.toString());
-        } finally {
-            // zamkniecie obiektow JDBC
-            close(conn, statement, null);
-        }
-
-    }
 
     public void updateUrlop(Urlopy urlopy) throws Exception {
 

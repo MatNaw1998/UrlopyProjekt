@@ -20,6 +20,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @WebServlet("/AdminServlet")
 public class AdminServlet extends HttpServlet {
 
+    //jdbc/urlop_web_appKierownik
     private DataSource dataSource;
     private DBUtilAdmin dbUtilAdmin;
     private DBUtilUrlopy dbUtilUrlopy;
@@ -30,14 +31,7 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        Context initCtx = null;
         try {
-            initCtx = new InitialContext();
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-
-            dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app"); //todo
-
             dbUtilUrlopy = new DBUtilUrlopy(dataSource);
             dbUtilAdmin = new DBUtilAdmin(dataSource);
             dbUtilPracownikInfo = new DBUtilPracwnikInfo(dataSource);
@@ -54,7 +48,7 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app"); //todo
+                    envCtx.lookup("jdbc/urlop_web_appKierownik"); //todo
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -71,32 +65,22 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         String password = request.getParameter("passwordInput");
 
 
-        if (dbUtilAdmin.validate(name, password)) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
-
-            List<Urlopy> urlopyList = null;
-
-            try {
-
-                urlopyList = dbUtilUrlopy.getAll();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // dodanie listy do obiektu zadania
-            request.setAttribute("URLOPY_LIST", urlopyList);
-
-            dispatcher.forward(request, response);
-        } else {
-
+            DaneLogowania daneAdmina = dbUtilAdmin.getAdminByLogin(name);
+            if (daneAdmina.getHaslo().equals(password)) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
+                List<Urlopy> urlopyList = null;
+                try {
+                    urlopyList = dbUtilUrlopy.getAll();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                request.setAttribute("URLOPY_LIST", urlopyList);
+                dispatcher.forward(request, response);
+            }else{
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.html");
             dispatcher.include(request, response);
         }
-
-
     }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
 
