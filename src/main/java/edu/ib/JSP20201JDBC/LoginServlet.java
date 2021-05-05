@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
             // Look up our data source
             dataSource = (DataSource)
-                    envCtx.lookup("jdbc/urlop_web_app"); //todo
+                    envCtx.lookup("jdbc/urlop_web_appKierownik"); //todo
 
         } catch (NamingException e) {
             e.printStackTrace();
@@ -149,7 +149,7 @@ public class LoginServlet extends HttpServlet {
         int dostepnyUrlop = pracownikInfo2.getIloscDni();
         int pozostalyUrlop = (int) (dostepnyUrlop -ilosc);
 
-        if (pozostalyUrlop>=0){
+        if (pozostalyUrlop>=dostepnyUrlop){
             // utworzenie obiektu klasy Phone
             Urlopy urlopy = new Urlopy(emial,od,doU,ilosc.intValue(),"do akceptacji");
 
@@ -246,6 +246,7 @@ public class LoginServlet extends HttpServlet {
 
     }
 
+    //to jest prosba o usuniecie
     private void usunUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int dni;
         // odczytanie danych z formularza
@@ -254,8 +255,9 @@ public class LoginServlet extends HttpServlet {
          int d = pracownikInfo2.getIloscDni()+dni;
          pracownikInfo2.setIloscDni(d);
         // uaktualnienie danych w BD
+
         dbUtilPracwnikInfo.update(pracownikInfo2);
-        dbUtilUrlopy.delete(id);
+        dbUtilUrlopy.delete(id); //TODO ASK FOR DELETE ()
         //<todo zwiekszenie pulidostepnych dni
         //<wyciagnij mi z bazy ile dni mial usuwany urlop i update user info
 
