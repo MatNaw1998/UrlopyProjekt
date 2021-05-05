@@ -23,7 +23,7 @@ public class AdminServlet extends HttpServlet {
     private DataSource dataSource;
     private DBUtilAdmin dbUtilAdmin;
     private DBUtilUrlopy dbUtilUrlopy;
-
+DBUtilPracwnikInfo dbUtilPracownikInfo;
     private final String db_url = "jdbc:mysql://localhost:3306/projektUrlop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
@@ -40,6 +40,7 @@ public class AdminServlet extends HttpServlet {
 
             dbUtilUrlopy = new DBUtilUrlopy(dataSource);
             dbUtilAdmin = new DBUtilAdmin(dataSource);
+            dbUtilPracownikInfo = new DBUtilPracwnikInfo(dataSource);
 
         } catch (Exception e) {
             throw new ServletException(e);
@@ -174,9 +175,8 @@ public class AdminServlet extends HttpServlet {
 
         // przekazanie do JSP
         dispatcher.forward(request, response);
-
     }
-
+ /*
     private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -189,7 +189,7 @@ public class AdminServlet extends HttpServlet {
         listUrolps(request, response);
 
     }
-
+*/
     private void updateZatwierdz(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // odczytanie danych z formularza
@@ -215,6 +215,30 @@ public class AdminServlet extends HttpServlet {
         listUrolps(request, response);
 
     }
+  private void deleteUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int dni;
+        // odczytanie danych z formularza
+        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println(id);
 
+        String email = request.getParameter("email");
+        System.out.println(email);
+        PracownikInfo pracownikInfo = dbUtilPracownikInfo.getByEmail(email);
+        dni = dbUtilUrlopy.getById(id).getIloscDni();
+        int d = pracownikInfo.getIloscDni()+dni;
+        pracownikInfo.setIloscDni(d);
+        // uaktualnienie danych w BD
+
+        dbUtilPracownikInfo.update(pracownikInfo);
+        dbUtilUrlopy.delete(id); //TODO ASK FOR DELETE ()
+        //<todo zwiekszenie pulidostepnych dni
+        //<wyciagnij mi z bazy ile dni mial usuwany urlop i update user info
+
+
+
+        // wyslanie danych do strony z lista telefonow
+        listUrolps(request, response);
+
+    }
 
 }

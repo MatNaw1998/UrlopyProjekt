@@ -52,7 +52,7 @@
         <form action="LoginServlet" method="get">
             <input type="hidden" name="command" value="MOD"/>
             <input type="hidden" name="id" value="${URLOP.id}"/>
-            <input type="hidden" name="email" value="${URLOP.imieNazwisko}"/>
+            <input type="hidden" name="email" value="${URLOP.email}"/>
             <div class="col-sm-6">
                 <label >Od</label>
                 <label>

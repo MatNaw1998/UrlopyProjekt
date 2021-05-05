@@ -60,7 +60,7 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">name</th>
+        <th scope="col">email</th>
         <th scope="col">od</th>
         <th scope="col">do</th>
         <th scope="col">ilosc</th>
@@ -83,11 +83,12 @@
         <c:url var="usun" value="AdminServlet">
             <c:param name="command" value="USUN"></c:param>
             <c:param name="id" value="${uropList.id}"></c:param>
+            <c:param name="email" value="${uropList.email}"></c:param>
         </c:url>
 
         <tr>
             <th scope="row"></th>
-            <td>${uropList.imieNazwisko}</td>
+            <td>${uropList.email}</td>
             <td>${uropList.od}</td>
             <td>${uropList.doU}</td>
             <td>${uropList.iloscDni}</td>

@@ -15,24 +15,24 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class Urlopy {
 
     private int id;
-    private String imieNazwisko ;
+    private String email;
     private String od;
     private String doU;
     private int  iloscDni ;
     private String statusU;
 
 
-    public Urlopy(int id, String imieNazwisko, String od, String doU, int iloscDni, String statusU) {
+    public Urlopy(int id, String email, String od, String doU, int iloscDni, String statusU) {
         this.id = id;
-        this.imieNazwisko = imieNazwisko;
+        this.email = email;
         this.od = od;
         this.doU = doU;
         this.iloscDni = iloscDni;
         this.statusU = statusU;
     }
 
-    public Urlopy(String imieNazwisko, String od, String doU, int iloscDni, String statusU) {
-        this.imieNazwisko = imieNazwisko;
+    public Urlopy(String email, String od, String doU, int iloscDni, String statusU) {
+        this.email = email;
         this.od = od;
         this.doU = doU;
         this.iloscDni = iloscDni;
@@ -63,12 +63,12 @@ public class Urlopy {
         this.doU = doU;
     }
 
-    public String getImieNazwisko() {
-        return imieNazwisko;
+    public String getEmail() {
+        return email;
     }
 
-    public void setImieNazwisko(String imieNazwisko) {
-        this.imieNazwisko = imieNazwisko;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 

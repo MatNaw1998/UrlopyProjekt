@@ -40,7 +40,7 @@ public class DBUtilUrlopy extends DBUtil {
 
                 // pobranie danych z rzedu
                 int id = resultSet.getInt("id");
-                String imieNazwisko = resultSet.getString("email");
+                String email = resultSet.getString("email");
                 String od = resultSet.getString("od");
                 String doU = resultSet.getString("doU");
                 Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
@@ -48,7 +48,7 @@ public class DBUtilUrlopy extends DBUtil {
 
 
                 // dodanie do listy nowego obiektu
-                urlopies.add(new Urlopy(id,imieNazwisko,od,doU,iloscDni.intValue(),statusU));
+                urlopies.add(new Urlopy(id,email,od,doU,iloscDni.intValue(),statusU));
 
             }
 
@@ -129,7 +129,7 @@ public class DBUtilUrlopy extends DBUtil {
                     "VALUES(?,?,?,?,'Do akceptacji')";
 
             statement = conn.prepareStatement(sql);
-            statement.setString(1, String.valueOf(urlopy.getImieNazwisko()));
+            statement.setString(1, String.valueOf(urlopy.getEmail()));
             statement.setString(2, String.valueOf(urlopy.getOd()));
             statement.setString(3, String.valueOf(urlopy.getDoU()));
             statement.setLong(4, urlopy.getIloscDni());
@@ -198,6 +198,29 @@ public class DBUtilUrlopy extends DBUtil {
         }
     }
 
+    public void updatePoprosOUsuniecie( int id ) throws Exception {
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+            // zapytanie UPDATE
+            String sql = "UPDATE daneUrlopu SET statusU='Do usuniecia'" +
+                    "WHERE id =?";
+            statement = conn.prepareStatement(sql);
+
+            statement.setInt(1, id);
+            // wykonanie zapytania
+            statement.execute();
+
+        } finally {
+            // zamkniecie obiektow JDBC
+            close(conn, statement, null);
+        }
+    }
 
     public void delete(int id) throws Exception {
 
@@ -226,35 +249,6 @@ public class DBUtilUrlopy extends DBUtil {
         }
 
     }
-/*
-    public boolean validate(String name, String pass) {
-        boolean status = false;
-
-        try {
-
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-
-        Connection conn = null;
-
-        try {
-
-            conn = DriverManager.getConnection(URL, name, pass);
-
-
-            status = true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return status;
-    }
-*/
 
     public void setName(String name) {
         this.name = name;

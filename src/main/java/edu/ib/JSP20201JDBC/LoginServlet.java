@@ -246,23 +246,13 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    //to jest prosba o usuniecie
     private void usunUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
         int dni;
         // odczytanie danych z formularza
         int id = Integer.parseInt(request.getParameter("id"));
-         dni = dbUtilUrlopy.getById(id).getIloscDni();
-         int d = pracownikInfo2.getIloscDni()+dni;
-         pracownikInfo2.setIloscDni(d);
-        // uaktualnienie danych w BD
-
-        dbUtilPracwnikInfo.update(pracownikInfo2);
-        dbUtilUrlopy.delete(id); //TODO ASK FOR DELETE ()
-        //<todo zwiekszenie pulidostepnych dni
-        //<wyciagnij mi z bazy ile dni mial usuwany urlop i update user info
 
 
-
+        dbUtilUrlopy.updatePoprosOUsuniecie(id);
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);
 
@@ -278,12 +268,22 @@ public class LoginServlet extends HttpServlet {
         LocalDate doD = LocalDate.parse(doU);
         Long ilosc = DAYS.between(odD, doD);
 
+        Urlopy urlopy1 = dbUtilUrlopy.getById(id);
+
 
         // utworzenie nowego telefonu
-        Urlopy urlopy = new Urlopy(id,emial,od,doU,ilosc.intValue(),"do akceptacji");
+        Urlopy urlopy2 = new Urlopy(id,emial,od,doU,ilosc.intValue(),"do akceptacji");
+
+        int diff = urlopy1.getIloscDni()-urlopy2.getIloscDni();
+        pracownikInfo2.getIloscDni();
+
+
+        PracownikInfo pracownikInfo3 = pracownikInfo2;
+        pracownikInfo3.setIloscDni((pracownikInfo2.getIloscDni()+diff));
 
         // uaktualnienie danych w BD
-        dbUtilUser.updateUrlop(urlopy);
+        dbUtilUser.updateUrlop(urlopy2);
+        dbUtilPracwnikInfo.update(pracownikInfo3);
 
         // wyslanie danych do strony z lista telefonow
         listUrolps(request, response);

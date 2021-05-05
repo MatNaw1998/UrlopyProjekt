@@ -42,7 +42,7 @@ public class DBUtilUser extends DBUtil {
 
                 // pobranie danych z rzedu
                 int id = resultSet.getInt("id");
-                String imieNazwisko = resultSet.getString("email");
+                String email1 = resultSet.getString("email");
                 String od = resultSet.getString("od");
                 String doU = resultSet.getString("doU");
                 Long iloscDni = Long.parseLong(resultSet.getString("iloscDni"));
@@ -50,7 +50,7 @@ public class DBUtilUser extends DBUtil {
 
 
                 // dodanie do listy nowego obiektu
-                urlopies.add(new Urlopy(id,imieNazwisko,od,doU,iloscDni.intValue(),statusU));
+                urlopies.add(new Urlopy(id,email1,od,doU,iloscDni.intValue(),statusU));
 
             }
 
@@ -79,7 +79,7 @@ public class DBUtilUser extends DBUtil {
                     "VALUES(?,?,?,?,'Do akceptacji')";
 
             statement = conn.prepareStatement(sql);
-            statement.setString(1, String.valueOf(urlopy.getImieNazwisko()));
+            statement.setString(1, String.valueOf(urlopy.getEmail()));
             statement.setString(2, String.valueOf(urlopy.getOd()));
             statement.setString(3, String.valueOf(urlopy.getDoU()));
             statement.setLong(4, urlopy.getIloscDni());
@@ -207,7 +207,7 @@ public class DBUtilUser extends DBUtil {
 
             statement = conn.prepareStatement(sql);
             statement.setInt(1, urlopy.getId());
-            statement.setString(2, urlopy.getImieNazwisko());
+            statement.setString(2, urlopy.getEmail());
             statement.setString(3, urlopy.getOd());
             statement.setString(4, urlopy.getDoU());
             statement.setLong(5, urlopy.getIloscDni());

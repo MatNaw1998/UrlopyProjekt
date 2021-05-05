@@ -87,7 +87,7 @@
 
         <tr>
             <th scope="row"></th>
-            <td>${uropList.imieNazwisko}</td>
+            <td>${uropList.email}</td>
             <td>${uropList.od}</td>
             <td>${uropList.doU}</td>
             <td>${uropList.iloscDni}</td>

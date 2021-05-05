@@ -247,6 +247,62 @@ public class DBUtilPracwnikInfo extends DBUtil {
 
     }
 
+    public PracownikInfo getByEmail(String email){
+        PracownikInfo pracownikInfo = null;
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            // polaczenie z BD
+            conn = dataSource.getConnection();
+
+
+            System.out.println("conn");
+            // zapytanie SELECT
+            String sql = "SELECT * FROM pracownikinfo WHERE email =?";
+
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, email);
+            System.out.println(statement.toString());
+            // wykonanie zapytania
+            resultSet = statement.executeQuery();
+            System.out.println(resultSet.toString());
+            // przetworzenie wyniku zapytania
+
+            if (resultSet.next()) {
+////id, email, latapracy,mcepracy,dataZ,wyksztalcenie,iloscDni
+                int id  = resultSet.getInt("id");
+                String latapracy = resultSet.getString("latapracy");
+                String mcepracy = resultSet.getString("mcepracy");
+                String dataZ = resultSet.getString("dataZ");
+                String wyksztalcenie = resultSet.getString("wyksztalcenie");
+                int iloscDni = resultSet.getInt("iloscDni");
+
+
+                // utworzenie obiektu
+                pracownikInfo = new PracownikInfo(id, email, latapracy, mcepracy, dataZ, wyksztalcenie, iloscDni);
+
+            } else {
+                throw new Exception("Could not find employee with id " + email);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            // zamkniecie obiektow JDBC
+            close(conn, statement, resultSet);
+
+        }
+        return pracownikInfo;
+
+    }
+
+
 
 /*
     public PracownikInfo getPinfById(int id){
