@@ -193,7 +193,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<script type=\"text/javascript\">");
             out.println("alert('zbyt dlugi urlop');");
             //out.println("window.location.assign('user_login.html';");
-            out.println("window.location = 'user_view.jsp';");
+            out.println("window.location = 'add_phone_form.jsp';");
             out.println("</script>");
         }
     }

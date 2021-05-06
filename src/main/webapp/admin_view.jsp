@@ -33,7 +33,7 @@
 
             <ul class="navbar-nav">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Panel Pracownika</a>
-                <a class="nav-link disabled" href="admin_login.html">Panel Kierownika</a>
+                <a class="nav-link" href="admin_login.html">Panel Kierownika</a>
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Utworz uzytkownika</a>
 
                 <a class="nav-link" href="index.html">Wyloguj</a>
