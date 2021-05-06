@@ -315,27 +315,29 @@ public class LoginServlet extends HttpServlet {
         LocalDate doD = LocalDate.parse(doU);
         Long ilosc = DAYS.between(odD, doD);
 
-        Urlopy urlopy1 = dbUtilUrlopy.getById(id);
+        if(ilosc>0) {
+            Urlopy urlopy1 = dbUtilUrlopy.getById(id);
 
 
-        // utworzenie nowego telefonu
-        Urlopy urlopy2 = new Urlopy(id,emial,od,doU,ilosc.intValue(),"do akceptacji");
+            // utworzenie nowego telefonu
+            Urlopy urlopy2 = new Urlopy(id, emial, od, doU, ilosc.intValue(), "do akceptacji");
 
 
             int diff = urlopy1.getIloscDni() - urlopy2.getIloscDni();
             pracownikInfo2.getIloscDni();
 
-        if ((pracownikInfo2.getIloscDni() + diff)>=0) {
-            PracownikInfo pracownikInfo3 = pracownikInfo2;
-            pracownikInfo3.setIloscDni((pracownikInfo2.getIloscDni() + diff));
+            if ((pracownikInfo2.getIloscDni() + diff) >= 0) {
+                PracownikInfo pracownikInfo3 = pracownikInfo2;
+                pracownikInfo3.setIloscDni((pracownikInfo2.getIloscDni() + diff));
 
-            // uaktualnienie danych w BD
-            dbUtilUser.updateUrlop(urlopy2);
-            dbUtilPracwnikInfo.update(pracownikInfo3);
+                // uaktualnienie danych w BD
+                dbUtilUser.updateUrlop(urlopy2);
+                dbUtilPracwnikInfo.update(pracownikInfo3);
 
-            // wyslanie danych do strony z lista telefonow
-            listUrolps(request, response);
+                // wyslanie danych do strony z lista telefonow
+                listUrolps(request, response);
 
+            }
         }
         else
         {
