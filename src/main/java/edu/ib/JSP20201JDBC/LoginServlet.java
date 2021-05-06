@@ -169,24 +169,27 @@ public class LoginServlet extends HttpServlet {
         LocalDate doD = LocalDate.parse(doU);
         Long ilosc = DAYS.between(odD, doD);
 
+        if(ilosc>0) {
+            int dostepnyUrlop = pracownikInfo2.getIloscDni();
+            int pozostalyUrlop = (int) (dostepnyUrlop - ilosc);
 
-        int dostepnyUrlop = pracownikInfo2.getIloscDni();
-        int pozostalyUrlop = (int) (dostepnyUrlop -ilosc);
+            if (pozostalyUrlop >= 0) {
+                // utworzenie obiektu klasy Phone
+                Urlopy urlopy = new Urlopy(emial, od, doU, ilosc.intValue(), "do akceptacji");
 
-        if (pozostalyUrlop>=0){
-            // utworzenie obiektu klasy Phone
-            Urlopy urlopy = new Urlopy(emial,od,doU,ilosc.intValue(),"do akceptacji");
+                pracownikInfo2.setIloscDni(pozostalyUrlop);
+                dbUtilPracwnikInfo.update(pracownikInfo2);
 
-            pracownikInfo2.setIloscDni(pozostalyUrlop);
-            dbUtilPracwnikInfo.update(pracownikInfo2);
+                // dodanie nowego obiektu do BD
+                dbUtilUser.addUrlop(urlopy);
 
-            // dodanie nowego obiektu do BD
-            dbUtilUser.addUrlop(urlopy);
+                // powrot do listy
+                listUrolps(request, response);
 
-            // powrot do listy
-            listUrolps(request, response);
+            }
+        }else {
 
-        }else{
+
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
 
