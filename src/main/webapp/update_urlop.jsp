@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <ul class="navbar-nav">
-                <a class="nav-link" aria-current="page" href="user_login.html">Panel Pracownika</a>
+                <a class="nav-link" aria-current="page" href="user_view.html">Panel Pracownika</a>
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Panel Kierownika</a>
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Utworz uzytkownika</a>
 
