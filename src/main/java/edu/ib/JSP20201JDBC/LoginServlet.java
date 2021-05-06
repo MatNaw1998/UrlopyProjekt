@@ -173,7 +173,7 @@ public class LoginServlet extends HttpServlet {
             int dostepnyUrlop = pracownikInfo2.getIloscDni();
             int pozostalyUrlop = (int) (dostepnyUrlop - ilosc);
 
-            if (pozostalyUrlop >= 0) {
+             if (pozostalyUrlop >= 0) {
                 // utworzenie obiektu klasy Phone
                 Urlopy urlopy = new Urlopy(emial, od, doU, ilosc.intValue(), "do akceptacji");
 
@@ -186,7 +186,18 @@ public class LoginServlet extends HttpServlet {
                 // powrot do listy
                 listUrolps(request, response);
 
-            }
+            }else {
+
+
+                 PrintWriter out = response.getWriter();
+                 response.setContentType("text/html");
+
+                 out.println("<script type=\"text/javascript\">");
+                 out.println("alert('zla dlugosc urlopu');");
+                 //out.println("window.location.assign('user_login.html';");
+                 out.println("window.location = 'add_phone_form.jsp';");
+                 out.println("</script>");
+             }
         }else {
 
 
@@ -194,7 +205,7 @@ public class LoginServlet extends HttpServlet {
             response.setContentType("text/html");
 
             out.println("<script type=\"text/javascript\">");
-            out.println("alert('zbyt dlugi urlop');");
+            out.println("alert('zla kolejnosc dat');");
             //out.println("window.location.assign('user_login.html';");
             out.println("window.location = 'add_phone_form.jsp';");
             out.println("</script>");
