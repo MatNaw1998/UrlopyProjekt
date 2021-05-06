@@ -1,44 +1,68 @@
+drop database projektUrlop;
 create database projektUrlop;
 
 use projektUrlop;
 
-drop table daneUrlopu;
 
 create table daneUrlopu (
 id int primary key auto_increment,
-imieNazwisko varchar(100),
+email varchar(100),
 od varchar(100),
 doU varchar(100),
 iloscDni int,
 statusU varchar(100)
 );
 
+
+
+create table pracownikInfo(
+id int primary key,
+email varchar(100) unique,
+latapracy varchar(100),
+mcepracy varchar(100),
+dataZ varchar(100),
+wyksztalcenie varchar(100),
+iloscDni int
+);
+
 create table dane_logowania(
-id varchar(100)  primary key ,
+id_uzytkownika varchar(100)  primary key ,
 haslo varchar(100),
-email varchar(100)
+email varchar(100) unique
+);
+
+create table dane_logowania_admin(
+id_admina varchar(100)  primary key ,
+haslo varchar(100),
+email varchar(100) unique
 );
 
 
- CREATE USER 'pracownik'@'localhost';
-  SET PASSWORD FOR 'pracownik'@'localhost' = 'pracownik';
-  
-  CREATE USER 'kierownik'@'localhost';
-  SET PASSWORD FOR 'kierownik'@'localhost' = 'kierownik';
-  
-  
-grant ALL PRIVILEGES on projektUrlop.* to 'kierownik'@'localhost';
-grant INSERT , SELECT , UPDATE on projektUrlop.* to 'pracownik'@'localhost';
+-- Table urlopydb.`okresy_nauki`
+-- -----------------------------------------------------
 
-drop trigger poDodaniu;
 
-INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) 
-                    VALUES("Mateusz","2020-09-21","2020-09-28",8,"nie zatwierdzone");
+ select * from mysql.user;
+ 
 
-INSERT INTO daneUrlopu(imieNazwisko,od,doU,iloscDni,statusU) 
-                    VALUES("ada","2020-09-21","2020-09-28",8,"");
 
+CREATE USER 'pracUrlopy'@'localhost';
+SET PASSWORD FOR 'pracUrlopy'@'localhost' = 'pracUrlopy';
+
+   CREATE USER 'kierownik'@'localhost';
+   SET PASSWORD FOR 'kierownik'@'localhost' = 'kierownik';
+
+  grant ALL PRIVILEGES on projektUrlop.* to 'kierownik'@'localhost';
+  grant INSERT , SELECT , UPDATE on projektUrlop.* to 'pracUrlopy'@'localhost';
 
 
 
+insert into dane_logowania_admin(id_admina, email, haslo) values (
+"1", "admin", "admin");
+insert into dane_logowania(id_uzytkownika, email, haslo) values (
+"2", "lg2", "pg2");
+insert into dane_logowania(id_uzytkownika, email, haslo) values (
+"4", "lg2", "pg3");
 
+
+select * from dane_logowania;
