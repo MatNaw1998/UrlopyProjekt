@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -87,7 +88,7 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
         String name = request.getParameter("loginInput");
         String password = request.getParameter("passwordInput");
 
-
+        try {
             DaneLogowania daneAdmina = dbUtilAdmin.getAdminByLogin(name);
             if (daneAdmina.getHaslo().equals(password)) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_view.jsp");
@@ -97,12 +98,24 @@ DBUtilPracwnikInfo dbUtilPracownikInfo;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 request.setAttribute("URLOPY_LIST", urlopyList);
                 dispatcher.forward(request, response);
-            }else{
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.html");
-            dispatcher.include(request, response);
+
+            } else {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.html");
+                dispatcher.include(request, response);
+            }
+        }catch (NullPointerException e){
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+            out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
+            out.println("alert('NIEPOPRAWNE DANE LOGOWANIA');");
+            //  out.println("window.location.assign('user_login.html';");
+            out.println("window.location = 'admin_login.html';");
+            out.println("</script>");
         }
+
     }
 
     /**

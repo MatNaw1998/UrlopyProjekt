@@ -320,6 +320,7 @@ public class LoginServlet extends HttpServlet {
      */
     private void updateUrlop(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        
         // odczytanie danych z formularza
         int id = Integer.parseInt(request.getParameter("id"));
 
@@ -351,6 +352,17 @@ public class LoginServlet extends HttpServlet {
                 // wyslanie danych do strony z lista telefonow
                 listUrolps(request, response);
 
+            }else
+            {
+
+                PrintWriter out = response.getWriter();
+                response.setContentType("text/html");
+                out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
+                out.println("alert('Musisz cofnac strone - zbyt dlugi urlop');");
+                //  out.println("window.location.assign('user_login.html';");
+//                out.println("window.location = 'user_view.jsp';");
+                out.println("</script>");
+
             }
         }
         else
@@ -359,12 +371,15 @@ public class LoginServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
             out.println("<script charset=\"utf-8\" type=\"text/javascript\">");
-            out.println("alert('NIEPOPRAWNY ZAKRES');");
+            out.println("alert('Musisz cofnac strone - zla kolejnosc dat');");
             //  out.println("window.location.assign('user_login.html';");
-            out.println("window.location = 'update_urlop.jsp';");
+//            out.println("window.location = 'user_view.jsp';");
             out.println("</script>");
 
         }
+
+
+
     }
 
     /**
